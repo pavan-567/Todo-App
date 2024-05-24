@@ -1,6 +1,6 @@
 import { createStore } from "redux";
-import postReducer from "./features/posts/postSlice";
+import todoReducer from "./features/todo/todoSlice";
 
-const store = createStore(postReducer);
+const store = createStore(todoReducer);
 
 export default store;

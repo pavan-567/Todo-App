@@ -1,7 +1,8 @@
 import "./App.css";
+import Todo from "./features/todo/Todo";
 
 function App() {
-  return <div>Hi</div>;
+  return <Todo />;
 }
 
 export default App;
