@@ -1,11 +1,11 @@
 import { v4 as uuidv4 } from "uuid";
 
 const initialState = {
-  todos: [{ id: 1, title: "I am Hero", description: "LOL", completed: false }],
+  todos: [],
   filter: "ALL",
 };
 
-// Structure => {id: number, title: string, description: string, completed: boolean}
+// Structure => {id: number, title: string, description: string, completed: boolean, createdAt: string, updatedAt: string}
 
 export default function todoReducer(state = initialState, action) {
   switch (action.type) {
@@ -55,6 +55,8 @@ export function createTodo(title, description) {
       title,
       description,
       completed: false,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
     },
   };
 }
