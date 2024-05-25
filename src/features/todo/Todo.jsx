@@ -1,8 +1,8 @@
 import styled from "styled-components";
-import { FaPlus } from "react-icons/fa";
+import { FaCaretUp, FaPlus } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import { MdDeleteForever } from "react-icons/md";
-import { IoIosRemoveCircle } from "react-icons/io";
+import { FaCaretDown } from "react-icons/fa6";
+import { IoIosRemoveCircle, IoMdArrowUp } from "react-icons/io";
 import { FaCheck } from "react-icons/fa";
 import {
   removeTodo,
@@ -195,28 +195,37 @@ const FilterContainer = styled.div`
 
 // Functionality
 
+function TodoHeader() {
+  const todos = useSelector((store) => store.todos);
+  const completedTodos = todos.filter((todo) => todo.completed === true);
+
+  return (
+    <Header>
+      <div
+        style={{
+          fontWeight: "bold",
+          fontSize: "30px",
+          textTransform: "uppercase",
+        }}
+      >
+        <span style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+          <FcTodoList />
+          <span>Todo</span>
+        </span>
+      </div>
+      <div style={{ textAlign: "center" }}>
+        <div>Completed</div>
+        <div>{completedTodos.length}</div>
+      </div>
+    </Header>
+  );
+}
+
 function Todo() {
   return (
     <Div>
       <Container>
-        <Header>
-          <div
-            style={{
-              fontWeight: "bold",
-              fontSize: "30px",
-              textTransform: "uppercase",
-            }}
-          >
-            <span style={{ display: "flex", alignItems: "center", gap: "5px" }}>
-              <FcTodoList />
-              <span>Todo</span>
-            </span>
-          </div>
-          <div style={{ textAlign: "center" }}>
-            <div>Completed</div>
-            <div>2 / 3</div>
-          </div>
-        </Header>
+        <TodoHeader />
         <div
           style={{
             borderBottom: "1px solid black",
@@ -317,6 +326,7 @@ function TodoInput() {
 function TodoList() {
   let todos = useSelector((store) => store.todos);
   let filter = useSelector((store) => store.filter);
+
   if (filter === "COMPLETED")
     todos = todos.filter((todo) => todo.completed === true);
   if (filter === "PENDING")
@@ -355,7 +365,7 @@ function TodoItem({ todo }) {
           alignSelf: "flex-start",
           marginTop: "2px",
           gap: "5px",
-          alignItems: "center"
+          alignItems: "center",
         }}
       >
         <div>
@@ -382,9 +392,11 @@ function TodoItem({ todo }) {
           )}
         </div>
         <div>
-          <button onClick={() => setOpen((bool) => !bool)}>
-            {open ? "Close" : "Open"}
-          </button>
+          {open ? (
+            <FaCaretUp className="icon" onClick={() => setOpen(false)} />
+          ) : (
+            <FaCaretDown className="icon" onClick={() => setOpen(true)} />
+          )}
         </div>
       </div>
     </Item>
