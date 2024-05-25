@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { FaPlus } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { MdDeleteForever } from "react-icons/md";
+import { IoIosRemoveCircle } from "react-icons/io";
 import { FaCheck } from "react-icons/fa";
 import {
   removeTodo,
@@ -12,35 +13,216 @@ import {
   filterTodos,
 } from "./todoSlice";
 import { IoClose } from "react-icons/io5";
+import { FcTodoList } from "react-icons/fc";
 
 import { useState } from "react";
 
 const Div = styled.div`
   min-height: 100vh;
+  min-width: 100dvw;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
+  background-color: #85ffbd;
+  background-image: linear-gradient(45deg, #85ffbd 0%, #fffb7d 100%);
 `;
 
 const Container = styled.div`
-  border: 1px solid black;
-  width: 50%;
-  height: auto;
+  border: none;
+  width: 500px;
+  padding: 15px;
+  background-color: RGB(255, 255, 255, 0.3);
+  border-radius: 5px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
+    rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+  margin: 50px 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
 `;
 
 const List = styled.div`
-  background-color: gainsboro;
+  padding: 10px;
+  border-radius: 5px;
+  margin-top: 5px;
 `;
 
 const Item = styled.div`
   border: 1px solid black;
-  margin: 2px;
+  padding: 5px 10px;
+  margin-top: 10px;
+  margin-bottom: 15px;
+  margin-left: 2px;
+  margin-right: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 10px;
+  border: none;
+
+  background-color: rgba(0, 25, 33, 0.1);
+
+  box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px,
+    rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
+
+  & .icon {
+    transition: transform 0.2s linear;
+    cursor: pointer;
+  }
+
+  & .icon:hover {
+    transform: scale(1.3);
+  }
+
+  & #title {
+    font-size: 30px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    font-family: "Courier New", Courier, monospace;
+  }
+
+  & #description {
+    font-style: italic;
+  }
+
+  & #time {
+    font-size: 10px;
+    margin-top: 5px;
+  }
 `;
+
+const Input = styled.input`
+  border: none;
+  padding: 4px;
+  margin: 2px 0;
+  border-radius: 3px;
+  outline: none;
+`;
+
+const InputContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  & label {
+    font-size: 12px;
+    font-weight: bold;
+  }
+
+  & * {
+    flex-grow: 1;
+  }
+`;
+
+const InputDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin: 5px 2px;
+`;
+
+const SubmitButton = styled.button`
+  align-self: flex-end;
+  margin-bottom: 7px;
+  color: #090909;
+  padding: 5px 10px;
+  font-size: 10px;
+  border-radius: 0.5em;
+  background: #e8e8e8;
+  cursor: pointer;
+  border: 1px solid #e8e8e8;
+  transition: all 0.3s;
+  box-shadow: 6px 6px 12px #c5c5c5, -6px -6px 12px #ffffff;
+
+  &:hover {
+    border: 1px solid gray;
+  }
+
+  &:active {
+    box-shadow: 4px 4px 12px #c5c5c5, -4px -4px 12px #ffffff;
+  }
+`;
+
+const Button = styled.button`
+  border-radius: 5px;
+  outline: none;
+  border: 1px solid #e8e8e8;
+  padding: 5px 12px;
+  background-color: white;
+  cursor: pointer;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+  transition: all 0.2s;
+
+  &:hover {
+    border: 1px solid gray;
+  }
+
+  &:disabled {
+    transform: none;
+    background-color: #bbbeb6;
+  }
+
+  &:disabled:hover {
+    cursor: auto;
+    color: gray;
+  }
+`;
+
+const Header = styled.div`
+  background-color: rgba(255, 255, 255, 0.6);
+  border-radius: 20px;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+const FilterContainer = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
+
+  & select {
+    border: none;
+    outline: none;
+    border-radius: 3px;
+    padding: 3px 2px;
+  }
+`;
+
+// Functionality
 
 function Todo() {
   return (
     <Div>
       <Container>
+        <Header>
+          <div
+            style={{
+              fontWeight: "bold",
+              fontSize: "30px",
+              textTransform: "uppercase",
+            }}
+          >
+            <span style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+              <FcTodoList />
+              <span>Todo</span>
+            </span>
+          </div>
+          <div style={{ textAlign: "center" }}>
+            <div>Completed</div>
+            <div>2 / 3</div>
+          </div>
+        </Header>
+        <div
+          style={{
+            borderBottom: "1px solid black",
+            marginTop: "10px",
+          }}
+        ></div>
         <TodoInput />
         <TodoFilters />
         <TodoList />
@@ -51,8 +233,9 @@ function Todo() {
 
 function TodoFilters() {
   const dispatch = useDispatch();
+  const todosLength = useSelector((store) => store.todos.length);
   return (
-    <div>
+    <FilterContainer>
       <select
         name=""
         id=""
@@ -65,13 +248,19 @@ function TodoFilters() {
         <option value="COMPLETED">Completed Tasks</option>
         <option value="PENDING">Pending Tasks</option>
       </select>
-      <button onClick={() => dispatch(completedAll())}>
+      <Button
+        onClick={() => dispatch(completedAll())}
+        disabled={todosLength <= 0}
+      >
         Mark All As Completed
-      </button>
-      <button onClick={() => dispatch(removeAllTodos())}>
+      </Button>
+      <Button
+        onClick={() => dispatch(removeAllTodos())}
+        disabled={todosLength <= 0}
+      >
         Remove All Tasks
-      </button>
-    </div>
+      </Button>
+    </FilterContainer>
   );
 }
 
@@ -82,28 +271,30 @@ function TodoInput() {
   const [description, setDescription] = useState("");
   const [error, setError] = useState("");
 
-  function handleInput(e) {
-    console.log(e.target.name);
-  }
-
   return (
-    <div>
-      <input
-        type="text"
-        placeholder="Add Title"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        // onChange={handleInput}
-        name="title"
-      />
-      <input
-        type="text"
-        placeholder="Add Description"
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
-        name="description"
-      />
-      <FaPlus
+    <InputContainer>
+      <InputDiv>
+        <label htmlFor="">Enter Title</label>
+        <Input
+          type="text"
+          placeholder="Add Title"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          // onChange={handleInput}
+          name="title"
+        />
+      </InputDiv>
+      <InputDiv>
+        <label htmlFor="">Enter Description</label>
+        <Input
+          type="text"
+          placeholder="Add Description"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          name="description"
+        />
+      </InputDiv>
+      <SubmitButton
         onClick={() => {
           if (title.length > 0 && description.length > 0) {
             dispatch(createTodo(title, description));
@@ -116,8 +307,10 @@ function TodoInput() {
             setError(message);
           }
         }}
-      />
-    </div>
+      >
+        <FaPlus />
+      </SubmitButton>
+    </InputContainer>
   );
 }
 
@@ -144,29 +337,41 @@ function TodoItem({ todo }) {
   const dispatch = useDispatch();
   return (
     <Item>
-      <div>{todo.title}</div>
-      <div
-        style={{ textDecoration: `${todo.completed ? "line-through" : ""}` }}
-      >
-        {todo.description}
-      </div>
       <div>
-        <MdDeleteForever onClick={() => dispatch(removeTodo(todo.id))} />
+        <div
+          id="title"
+          style={{ textDecoration: `${todo.completed ? "line-through" : ""}` }}
+        >
+          {todo.title}
+        </div>
+        <div id="description">{todo.description}</div>
+        {/* <div id="time">Created / Updated at : {todo.updatedAt} </div> */}
       </div>
-      <div>
-        {!todo.completed ? (
-          <FaCheck
-            onClick={() => {
-              dispatch(modifyTodo(todo.id));
-            }}
+      {/*  */}
+      <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+        <div>
+          <IoIosRemoveCircle
+            className="icon"
+            onClick={() => dispatch(removeTodo(todo.id))}
           />
-        ) : (
-          <IoClose
-            onClick={() => {
-              dispatch(modifyTodo(todo.id));
-            }}
-          />
-        )}
+        </div>
+        <div>
+          {!todo.completed ? (
+            <FaCheck
+              className="icon"
+              onClick={() => {
+                dispatch(modifyTodo(todo.id));
+              }}
+            />
+          ) : (
+            <IoClose
+              className="icon"
+              onClick={() => {
+                dispatch(modifyTodo(todo.id));
+              }}
+            />
+          )}
+        </div>
       </div>
     </Item>
   );

@@ -27,7 +27,11 @@ export default function todoReducer(state = initialState, action) {
         ...state,
         todos: state.todos.map((todo) =>
           todo.id === action.payload
-            ? { ...todo, completed: !todo.completed }
+            ? {
+                ...todo,
+                completed: !todo.completed,
+                updatedAt: new Date().toISOString(),
+              }
             : todo
         ),
       };
@@ -38,7 +42,11 @@ export default function todoReducer(state = initialState, action) {
     case "todos/completed":
       return {
         ...state,
-        todos: state.todos.map((todo) => ({ ...todo, completed: true })),
+        todos: state.todos.map((todo) => ({
+          ...todo,
+          completed: true,
+          updatedAt: new Date().toISOString(),
+        })),
       };
 
     default:
@@ -55,8 +63,8 @@ export function createTodo(title, description) {
       title,
       description,
       completed: false,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
+      createdAt: new Date().toLocaleString(),
+      updatedAt: new Date().toLocaleString(),
     },
   };
 }
