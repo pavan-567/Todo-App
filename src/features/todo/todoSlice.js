@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 const initialState = {
   todos: [],
   filter: "ALL",
+  editTodo: null,
 };
 
 // Structure => {id: number, title: string, description: string, completed: boolean, createdAt: string, updatedAt: string}
@@ -22,6 +23,9 @@ export default function todoReducer(state = initialState, action) {
       // return initialState;
       return initialState;
 
+    case "todos/todoId":
+      return { ...state, editTodo: action.payload };
+
     case "todos/modifyTodo":
       return {
         ...state,
@@ -36,6 +40,24 @@ export default function todoReducer(state = initialState, action) {
         ),
       };
 
+    case "todos/editTodo":
+      return {
+        ...state,
+        todos: state.todos.map((todo) =>
+          todo.id === state.editTodo
+            ? {
+                ...todo,
+                title: action.payload.title,
+                description: action.payload.description,
+                updatedAt: new Date().toLocaleString(),
+                editTodo: null,
+              }
+            : todo
+        ),
+        editTodo: null,
+        updatedAt: new Date().toLocaleString(),
+      };
+
     case "todos/filterTodos":
       return { ...state, filter: action.payload };
 
@@ -48,6 +70,9 @@ export default function todoReducer(state = initialState, action) {
           updatedAt: new Date().toISOString(),
         })),
       };
+
+    case "todos/removeEdit":
+      return { ...state, editTodo: null };
 
     default:
       return state;
@@ -87,4 +112,17 @@ export function completedAll() {
 
 export function filterTodos(filter) {
   return { type: "todos/filterTodos", payload: filter };
+}
+
+export function editTodoId(id) {
+  return { type: "todos/todoId", payload: id };
+}
+
+export function editTodo(title, description) {
+  console.log(title, description);
+  return { type: "todos/editTodo", payload: { title, description } };
+}
+
+export function removeEditMode() {
+  return { type: "todos/removeEdit" };
 }

@@ -2,7 +2,8 @@ import styled from "styled-components";
 import { FaCaretUp, FaPlus } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { FaCaretDown } from "react-icons/fa6";
-import { IoIosRemoveCircle, IoMdArrowUp } from "react-icons/io";
+import { MdDelete } from "react-icons/md";
+import { FaEdit } from "react-icons/fa";
 import { FaCheck } from "react-icons/fa";
 import {
   removeTodo,
@@ -11,8 +12,11 @@ import {
   modifyTodo,
   completedAll,
   filterTodos,
+  editTodoId,
+  removeEditMode,
+  editTodo,
 } from "./todoSlice";
-import { IoClose } from "react-icons/io5";
+import { IoClose, IoCloseSharp } from "react-icons/io5";
 import { FcTodoList } from "react-icons/fc";
 
 import { useState } from "react";
@@ -79,15 +83,37 @@ const Item = styled.div`
     font-weight: bold;
     margin-bottom: 10px;
     font-family: "Courier New", Courier, monospace;
+    word-break: break-word;
   }
 
   & #description {
     font-style: italic;
+    word-break: break-word;
   }
 
   & #time {
     font-size: 10px;
     margin-top: 5px;
+  }
+
+  & button {
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    font-size: 10px;
+
+    display: flex;
+    align-items: center;
+    gap: 3px;
+
+    background-color: rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  & button:hover {
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
   }
 `;
 
@@ -103,10 +129,6 @@ const InputContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 10px;
-  & label {
-    font-size: 12px;
-    font-weight: bold;
-  }
 
   & * {
     flex-grow: 1;
@@ -118,6 +140,11 @@ const InputDiv = styled.div`
   flex-direction: column;
   gap: 5px;
   margin: 5px 2px;
+
+  & label {
+    font-size: 12px;
+    font-weight: bold;
+  }
 `;
 
 const SubmitButton = styled.button`
@@ -193,6 +220,31 @@ const FilterContainer = styled.div`
   }
 `;
 
+const CompletedDiv = styled.div`
+  padding: 12px 15px;
+  border-radius: 50%;
+  width: 52px;
+  height: 52px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  align-items: center;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
+    rgba(0, 0, 0, 0.3) 0px 30px 60px -30px,
+    rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+
+  & :first-child {
+    font-size: 10px;
+    font-weight: bolder;
+  }
+
+  :last-child {
+    font-weight: bold;
+    font-size: 30px;
+    color: green;
+  }
+`;
+
 // Functionality
 
 function TodoHeader() {
@@ -213,15 +265,16 @@ function TodoHeader() {
           <span>Todo</span>
         </span>
       </div>
-      <div style={{ textAlign: "center" }}>
+      <CompletedDiv>
         <div>Completed</div>
         <div>{completedTodos.length}</div>
-      </div>
+      </CompletedDiv>
     </Header>
   );
 }
 
 function Todo() {
+  const editTodo = useSelector((store) => store.editTodo);
   return (
     <Div>
       <Container>
@@ -234,9 +287,57 @@ function Todo() {
         ></div>
         <TodoInput />
         <TodoFilters />
-        <TodoList />
+        {editTodo ? <TodoEdit /> : <TodoList />}
       </Container>
     </Div>
+  );
+}
+
+function TodoEdit() {
+  const { title, description } = useSelector((store) =>
+    store.todos.find((todo) => todo.id === store.editTodo)
+  );
+  const dispatch = useDispatch();
+
+  const [editTitle, setEditTitle] = useState(function () {
+    return title;
+  });
+
+  const [editDescription, setEditDescription] = useState(() => description);
+
+  return (
+    <Item>
+      <InputDiv>
+        <label htmlFor="">Title</label>
+        <Input
+          type="text"
+          value={editTitle}
+          onChange={(e) => setEditTitle(e.target.value)}
+        />
+      </InputDiv>
+      <InputDiv>
+        <label htmlFor="">Description</label>
+        <Input
+          type="text"
+          value={editDescription}
+          onChange={(e) => setEditDescription(e.target.value)}
+        />
+      </InputDiv>
+      <div style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
+        <button
+          onClick={() => {
+            if (editTitle.length > 0 && editDescription.length > 0) {
+              dispatch(editTodo(editTitle, editDescription));
+            }
+          }}
+        >
+          <FaEdit /> Edit
+        </button>
+        <button onClick={() => dispatch(removeEditMode())}>
+          <IoCloseSharp /> Close
+        </button>
+      </div>
+    </Item>
   );
 }
 
@@ -369,7 +470,7 @@ function TodoItem({ todo }) {
         }}
       >
         <div>
-          <IoIosRemoveCircle
+          <MdDelete
             className="icon"
             onClick={() => dispatch(removeTodo(todo.id))}
           />
@@ -390,6 +491,12 @@ function TodoItem({ todo }) {
               }}
             />
           )}
+        </div>
+        <div>
+          <FaEdit
+            className="icon"
+            onClick={() => dispatch(editTodoId(todo.id))}
+          />
         </div>
         <div>
           {open ? (
