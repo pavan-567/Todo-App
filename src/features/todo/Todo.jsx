@@ -335,6 +335,7 @@ function TodoList() {
 
 function TodoItem({ todo }) {
   const dispatch = useDispatch();
+  const [open, setOpen] = useState(true);
   return (
     <Item>
       <div>
@@ -344,11 +345,19 @@ function TodoItem({ todo }) {
         >
           {todo.title}
         </div>
-        <div id="description">{todo.description}</div>
+        {open && <div id="description">{todo.description}</div>}
         {/* <div id="time">Created / Updated at : {todo.updatedAt} </div> */}
       </div>
       {/*  */}
-      <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+      <div
+        style={{
+          display: "flex",
+          alignSelf: "flex-start",
+          marginTop: "2px",
+          gap: "5px",
+          alignItems: "center"
+        }}
+      >
         <div>
           <IoIosRemoveCircle
             className="icon"
@@ -371,6 +380,11 @@ function TodoItem({ todo }) {
               }}
             />
           )}
+        </div>
+        <div>
+          <button onClick={() => setOpen((bool) => !bool)}>
+            {open ? "Close" : "Open"}
+          </button>
         </div>
       </div>
     </Item>
