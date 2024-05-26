@@ -51,6 +51,8 @@ const List = styled.div`
   max-height: 500px;
   overflow-y: auto;
 
+  scrollbar-gutter: stable; // Reserves Space For Scroll Bar When Even It Isn't Visible
+
   &::-webkit-scrollbar {
     width: 5px;
   }
