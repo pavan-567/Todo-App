@@ -10,7 +10,7 @@ import { db } from "../../firebase";
 
 function TodoItem({ todo }) {
   const dispatch = useDispatch();
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
 
   return (
     <Item>

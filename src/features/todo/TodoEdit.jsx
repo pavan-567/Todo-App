@@ -6,11 +6,15 @@ import { FaEdit } from "react-icons/fa";
 import Item from "./styles/Item";
 import InputDiv from "./styles/InputDiv";
 import Input from "./styles/Input";
+import { doc, serverTimestamp, updateDoc } from "firebase/firestore";
+import { db } from "../../firebase";
 
 function TodoEdit() {
   const { title, description } = useSelector((store) =>
     store.todos.find((todo) => todo.id === store.editTodo)
   );
+
+  const editTodoId = useSelector((store) => store.editTodo);
   const dispatch = useDispatch();
 
   const [editTitle, setEditTitle] = useState(function () {
@@ -39,9 +43,18 @@ function TodoEdit() {
       </InputDiv>
       <div style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
         <button
-          onClick={() => {
+          onClick={async () => {
             if (editTitle.length > 0 && editDescription.length > 0) {
-              dispatch(editTodo(editTitle, editDescription));
+              // dispatch(editTodo(editTitle, editDescription));
+              await updateDoc(doc(db, "todos", editTodoId), {
+                title: editTitle,
+                description: editDescription,
+                updatedAt: serverTimestamp(),
+              });
+
+              setEditTitle("");
+              setEditDescription("");
+              dispatch(removeEditMode());
             }
           }}
         >
