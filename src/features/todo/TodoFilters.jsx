@@ -5,6 +5,8 @@ import Button from "./styles/Button";
 
 function TodoFilters() {
   const dispatch = useDispatch();
+  const todos = useSelector((store) => store.todos);
+  console.log(todos);
   const todosLength = useSelector((store) => store.todos.length);
   return (
     <FilterContainer>

@@ -5,11 +5,33 @@ import TodoList from "./TodoList";
 import TodoEdit from "./TodoEdit";
 import Container from "./styles/Container";
 import Div from "./styles/Div";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { collection, onSnapshot, query } from "firebase/firestore";
+import { db } from "../../firebase";
+import { changeState, setTodos } from "./todoSlice";
 
 // Functionality
 
 function Todo() {
+  const dispatch = useDispatch();
+  const state = useSelector((store) => store.state);
+
+  useEffect(() => {
+    let todos = [];
+    dispatch(changeState("loading"));
+    const q = query(collection(db, "todos"));
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        todos.push({ id: doc.id, ...doc.data() });
+      });
+      dispatch(changeState("stable"));
+    });
+    dispatch(setTodos(todos));
+
+    return () => unsubscribe();
+  }, []);
+
   const editTodo = useSelector((store) => store.editTodo);
   return (
     <Div>
@@ -22,8 +44,13 @@ function Todo() {
           }}
         ></div>
         <TodoInput />
-        <TodoFilters />
-        {editTodo ? <TodoEdit /> : <TodoList />}
+        {state === "loading" && <p>Loading....</p>}
+        {state === "stable" && (
+          <>
+            <TodoFilters />
+            {editTodo ? <TodoEdit /> : <TodoList />}
+          </>
+        )}
       </Container>
     </Div>
   );

@@ -4,12 +4,16 @@ const initialState = {
   todos: [],
   filter: "ALL",
   editTodo: null,
+  state: "stable", // Stable, Loading
 };
 
 // Structure => {id: number, title: string, description: string, completed: boolean, createdAt: string, updatedAt: string}
 
 export default function todoReducer(state = initialState, action) {
   switch (action.type) {
+    case "todos/setTodos":
+      return { ...state, todos: action.payload };
+
     case "todos/createTodo":
       return { ...state, todos: [...state.todos, action.payload] };
 
@@ -74,12 +78,19 @@ export default function todoReducer(state = initialState, action) {
     case "todos/removeEdit":
       return { ...state, editTodo: null };
 
+    case "todos/changeState":
+      return { ...state, state: action.payload };
+
     default:
       return state;
   }
 }
 
 // Action Creators
+export function setTodos(todos) {
+  return { type: "todos/setTodos", payload: todos };
+}
+
 export function createTodo(title, description) {
   return {
     type: "todos/createTodo",
@@ -125,4 +136,8 @@ export function editTodo(title, description) {
 
 export function removeEditMode() {
   return { type: "todos/removeEdit" };
+}
+
+export function changeState(state) {
+  return { type: "todos/changeState", payload: state };
 }
