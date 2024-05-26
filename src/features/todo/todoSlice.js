@@ -79,6 +79,7 @@ export default function todoReducer(state = initialState, action) {
       return { ...state, editTodo: null };
 
     case "todos/changeState":
+      console.log(state);
       return { ...state, state: action.payload };
 
     default:

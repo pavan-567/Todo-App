@@ -22,12 +22,14 @@ function Todo() {
     dispatch(changeState("loading"));
     const q = query(collection(db, "todos"));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      // onSnapshot is asynchronus.. Once It Changes, It Gets Triggered Again and Returns New Data Continuously... So Cleaning The Local Array Is Pretty Important Here!
       querySnapshot.forEach((doc) => {
         todos.push({ id: doc.id, ...doc.data() });
       });
       dispatch(changeState("stable"));
+      dispatch(setTodos(todos));
+      todos = [];
     });
-    dispatch(setTodos(todos));
 
     return () => unsubscribe();
   }, []);

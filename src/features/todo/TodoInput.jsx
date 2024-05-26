@@ -5,7 +5,9 @@ import InputContainer from "./styles/InputContainer";
 import InputDiv from "./styles/InputDiv";
 import Input from "./styles/Input";
 import SubmitButton from "./styles/SubmitButton";
-import { createTodo } from "./todoSlice";
+import { changeState, createTodo } from "./todoSlice";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { db } from "../../firebase";
 
 function TodoInput() {
   const dispatch = useDispatch();
@@ -13,6 +15,24 @@ function TodoInput() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [error, setError] = useState("");
+
+  async function createTodoAsync() {
+    if (title.length > 0 && description.length > 0) {
+      dispatch(changeState("loading"));
+
+      await addDoc(collection(db, "todos"), {
+        title,
+        description,
+        completed: false,
+        createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp(),
+      });
+      dispatch(changeState("stable"));
+
+      setTitle("");
+      setDescription("");
+    }
+  }
 
   return (
     <InputContainer>
@@ -37,20 +57,7 @@ function TodoInput() {
           name="description"
         />
       </InputDiv>
-      <SubmitButton
-        onClick={() => {
-          if (title.length > 0 && description.length > 0) {
-            dispatch(createTodo(title, description));
-            setTitle("");
-            setDescription("");
-            setError("");
-          } else {
-            let message =
-              title.length <= 0 ? "Enter Title" : "Enter Description";
-            setError(message);
-          }
-        }}
-      >
+      <SubmitButton onClick={createTodoAsync}>
         <FaPlus />
       </SubmitButton>
     </InputContainer>
