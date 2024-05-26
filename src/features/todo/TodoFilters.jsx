@@ -12,19 +12,25 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { db } from "../../firebase";
+import { useState } from "react";
 
 function TodoFilters() {
   const dispatch = useDispatch();
   const todos = useSelector((store) => store.todos);
+  const filter = useSelector((store) => store.filter);
+  const [taskStatus, setTaskStatus] = useState(() => filter);
+
   const todosLength = todos?.length;
+
   return (
     <FilterContainer>
       <select
         name=""
         id=""
-        defaultValue="ALL"
+        value={taskStatus}
         onChange={(e) => {
           dispatch(filterTodos(e.target.value));
+          setTaskStatus(e.target.value);
         }}
       >
         <option value="ALL">All</option>

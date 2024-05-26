@@ -25,7 +25,6 @@ function TodoHeader() {
         <div>Completed</div>
         <div>
           {completedTodos.length}
-          {todos.length > 0 && <span> / {todos.length}</span>}
         </div>
       </CompletedDiv>
     </Header>
