@@ -2,10 +2,21 @@ import { useDispatch, useSelector } from "react-redux";
 import { completedAll, filterTodos, removeAllTodos } from "./todoSlice";
 import FilterContainer from "./styles/FilterContainer";
 import Button from "./styles/Button";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  onSnapshot,
+  query,
+  serverTimestamp,
+  updateDoc,
+} from "firebase/firestore";
+import { db } from "../../firebase";
 
 function TodoFilters() {
   const dispatch = useDispatch();
-  const todosLength = useSelector((store) => store.todos.length);
+  const todos = useSelector((store) => store.todos);
+  const todosLength = todos?.length;
   return (
     <FilterContainer>
       <select
@@ -21,13 +32,26 @@ function TodoFilters() {
         <option value="PENDING">Pending Tasks</option>
       </select>
       <Button
-        onClick={() => dispatch(completedAll())}
+        onClick={async () => {
+          // dispatch(completedAll());
+          for (const todo of todos) {
+            await updateDoc(doc(db, "todos", todo.id), {
+              completed: true,
+              updatedAt: serverTimestamp(),
+            });
+          }
+        }}
         disabled={todosLength <= 0}
       >
         Mark All As Completed
       </Button>
       <Button
-        onClick={() => dispatch(removeAllTodos())}
+        onClick={async () => {
+          // dispatch(removeAllTodos())
+          for (const todo of todos) {
+            await deleteDoc(doc(db, "todos", todo.id));
+          }
+        }}
         disabled={todosLength <= 0}
       >
         Remove All Tasks
