@@ -18,7 +18,6 @@ import {
 } from "./todoSlice";
 import { IoClose, IoCloseSharp } from "react-icons/io5";
 import { FcTodoList } from "react-icons/fc";
-
 import { useState } from "react";
 
 const Div = styled.div`
@@ -33,7 +32,7 @@ const Div = styled.div`
 
 const Container = styled.div`
   border: none;
-  width: 500px;
+  max-width: 500px;
   padding: 15px;
   background-color: RGB(255, 255, 255, 0.3);
   border-radius: 5px;
@@ -42,13 +41,32 @@ const Container = styled.div`
   margin: 50px 30px;
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 10px;
 `;
 
 const List = styled.div`
   padding: 10px;
   border-radius: 5px;
   margin-top: 5px;
+  max-height: 500px;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: #e0e0e0;
+    border-radius: 100px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #85ffbd;
+    background-image: linear-gradient(45deg, #85ffbd 0%, #fffb7d 100%);
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset,
+      rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+    border-radius: 100px;
+  }
 `;
 
 const Item = styled.div`
@@ -81,7 +99,7 @@ const Item = styled.div`
   & #title {
     font-size: 30px;
     font-weight: bold;
-    margin-bottom: 10px;
+    margin-bottom: 2px;
     font-family: "Courier New", Courier, monospace;
     word-break: break-word;
   }
@@ -94,6 +112,23 @@ const Item = styled.div`
   & #time {
     font-size: 10px;
     margin-top: 5px;
+  }
+
+  & #status {
+    font-size: 10px;
+    display: flex;
+    gap: 5px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset,
+      rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+    padding: 5px 3px;
+    display: inline-block;
+  }
+
+  & #status div:last-child {
+    color: ${(props) => (props.status === "completed" ? "green" : "red")};
+    font-weight: bold;
+    font-style: ${(props) =>
+      props.status === "completed" ? "bold" : "italic"};
   }
 
   & button {
@@ -227,6 +262,7 @@ const CompletedDiv = styled.div`
   height: 52px;
   display: flex;
   flex-direction: column;
+  justify-content: space-evenly;
   gap: 3px;
   align-items: center;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
@@ -240,8 +276,12 @@ const CompletedDiv = styled.div`
 
   :last-child {
     font-weight: bold;
-    font-size: 30px;
+    font-size: 20px;
     color: green;
+  }
+
+  :last-child span {
+    color: black;
   }
 `;
 
@@ -267,7 +307,10 @@ function TodoHeader() {
       </div>
       <CompletedDiv>
         <div>Completed</div>
-        <div>{completedTodos.length}</div>
+        <div>
+          {completedTodos.length}
+          {todos.length > 0 && <span> / {todos.length}</span>}
+        </div>
       </CompletedDiv>
     </Header>
   );
@@ -446,13 +489,17 @@ function TodoList() {
 
 function TodoItem({ todo }) {
   const dispatch = useDispatch();
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(() => (todo.completed ? false : true));
+
   return (
-    <Item>
+    <Item status={todo.completed ? "completed" : "pending"}>
       <div>
         <div
           id="title"
-          style={{ textDecoration: `${todo.completed ? "line-through" : ""}` }}
+          style={{
+            textDecoration: `${todo.completed ? "line-through" : ""}`,
+            textDecorationColor: `${todo.completed ? "green" : ""}`,
+          }}
         >
           {todo.title}
         </div>
@@ -469,6 +516,7 @@ function TodoItem({ todo }) {
           alignItems: "center",
         }}
       >
+        <div></div>
         <div>
           <MdDelete
             className="icon"
