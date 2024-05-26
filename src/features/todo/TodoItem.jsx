@@ -5,6 +5,8 @@ import { MdDelete } from "react-icons/md";
 import { useDispatch } from "react-redux";
 import { editTodoId, modifyTodo, removeTodo } from "./todoSlice";
 import Item from "./styles/Item";
+import { deleteDoc, doc, updateDoc } from "firebase/firestore";
+import { db } from "../../firebase";
 
 function TodoItem({ todo }) {
   const dispatch = useDispatch();
@@ -39,22 +41,31 @@ function TodoItem({ todo }) {
         <div>
           <MdDelete
             className="icon"
-            onClick={() => dispatch(removeTodo(todo.id))}
+            onClick={async () => {
+              await deleteDoc(doc(db, "todos", todo.id));
+            }}
           />
         </div>
         <div>
           {!todo.completed ? (
             <FaCheck
               className="icon"
-              onClick={() => {
-                dispatch(modifyTodo(todo.id));
+              onClick={async () => {
+                // dispatch(modifyTodo(todo.id));
+
+                await updateDoc(doc(db, "todos", todo.id), {
+                  completed: true,
+                });
               }}
             />
           ) : (
             <IoClose
               className="icon"
-              onClick={() => {
-                dispatch(modifyTodo(todo.id));
+              onClick={async () => {
+                // dispatch(modifyTodo(todo.id));
+                await updateDoc(doc(db, "todos", todo.id), {
+                  completed: false,
+                });
               }}
             />
           )}

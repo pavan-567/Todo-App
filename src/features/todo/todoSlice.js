@@ -78,8 +78,7 @@ export default function todoReducer(state = initialState, action) {
     case "todos/removeEdit":
       return { ...state, editTodo: null };
 
-    case "todos/changeState":
-      console.log(state);
+    case "todos/changeState": // Important For Firebase
       return { ...state, state: action.payload };
 
     default:
