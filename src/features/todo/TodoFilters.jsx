@@ -1,16 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
-import { completedAll, filterTodos, removeAllTodos } from "./todoSlice";
+import { filterTodos } from "./todoSlice";
 import FilterContainer from "./styles/FilterContainer";
 import Button from "./styles/Button";
-import {
-  collection,
-  deleteDoc,
-  doc,
-  onSnapshot,
-  query,
-  serverTimestamp,
-  updateDoc,
-} from "firebase/firestore";
+import { deleteDoc, doc, serverTimestamp, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase";
 import { useState } from "react";
 
@@ -39,7 +31,6 @@ function TodoFilters() {
       </select>
       <Button
         onClick={async () => {
-          // dispatch(completedAll());
           for (const todo of todos) {
             await updateDoc(doc(db, "todos", todo.id), {
               completed: true,
@@ -53,7 +44,6 @@ function TodoFilters() {
       </Button>
       <Button
         onClick={async () => {
-          // dispatch(removeAllTodos())
           for (const todo of todos) {
             await deleteDoc(doc(db, "todos", todo.id));
           }

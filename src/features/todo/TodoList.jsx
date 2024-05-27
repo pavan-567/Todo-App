@@ -6,6 +6,7 @@ function TodoList() {
   let todos = useSelector((store) => store.todos);
   let filter = useSelector((store) => store.filter);
 
+
   if (filter === "COMPLETED")
     todos = todos.filter((todo) => todo.completed === true);
   if (filter === "PENDING")

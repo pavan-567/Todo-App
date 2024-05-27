@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { editTodo, removeEditMode } from "./todoSlice";
+import { changeStatus, removeEditMode } from "./todoSlice";
 import { IoCloseSharp } from "react-icons/io5";
 import { FaEdit } from "react-icons/fa";
 import Item from "./styles/Item";
@@ -45,7 +45,6 @@ function TodoEdit() {
         <button
           onClick={async () => {
             if (editTitle.length > 0 && editDescription.length > 0) {
-              // dispatch(editTodo(editTitle, editDescription));
               await updateDoc(doc(db, "todos", editTodoId), {
                 title: editTitle,
                 description: editDescription,

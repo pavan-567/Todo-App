@@ -6,35 +6,20 @@ import TodoEdit from "./TodoEdit";
 import Container from "./styles/Container";
 import Div from "./styles/Div";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { collection, onSnapshot, query } from "firebase/firestore";
 import { db } from "../../firebase";
-import { changeState, setTodos } from "./todoSlice";
+import { changeStatus, setTodos } from "./todoSlice";
+import useFetchTodos from "./hooks/useFetchTodos";
 
 // Functionality
 
 function Todo() {
-  const dispatch = useDispatch();
-  const state = useSelector((store) => store.state);
-
-  useEffect(() => {
-    let todos = [];
-    dispatch(changeState("loading"));
-    const q = query(collection(db, "todos"));
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      // onSnapshot is asynchronus.. Once It Changes, It Gets Triggered Again and Returns New Data Continuously... So Cleaning The Local Array Is Pretty Important Here!
-      querySnapshot.forEach((doc) => {
-        todos.push({ id: doc.id, ...doc.data() });
-      });
-      dispatch(changeState("stable"));
-      dispatch(setTodos(todos));
-      todos = [];
-    });
-
-    return () => unsubscribe();
-  }, []);
-
   const editTodo = useSelector((store) => store.editTodo);
+  const status = useSelector((store) => store.status);
+
+  useFetchTodos();
+
   return (
     <Div>
       <Container>
@@ -46,8 +31,8 @@ function Todo() {
           }}
         ></div>
         <TodoInput />
-        {state === "loading" && <p>Loading....</p>}
-        {state === "stable" && (
+        {status === "loading" && <p>Loading....</p>}
+        {status === "stable" && (
           <>
             <TodoFilters />
             {editTodo ? <TodoEdit /> : <TodoList />}
