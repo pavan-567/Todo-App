@@ -41,7 +41,9 @@ function TodoEdit() {
         <button
           onClick={() => {
             if (editTitle.length > 0 && editDescription.length > 0) {
-              dispatch(editTodo(editTitle, editDescription));
+              dispatch(
+                editTodo({ title: editTitle, description: editDescription })
+              );
             }
           }}
         >

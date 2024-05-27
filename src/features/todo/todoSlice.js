@@ -1,4 +1,6 @@
+import { createSlice } from "@reduxjs/toolkit";
 import { v4 as uuidv4 } from "uuid";
+
 
 const initialState = {
   todos: [],
@@ -6,123 +8,93 @@ const initialState = {
   editTodo: null,
 };
 
-// Structure => {id: number, title: string, description: string, completed: boolean, createdAt: string, updatedAt: string}
-
-export default function todoReducer(state = initialState, action) {
-  switch (action.type) {
-    case "todos/createTodo":
-      return { ...state, todos: [...state.todos, action.payload] };
-
-    case "todos/removeTodo":
-      const filteredTodos = state.todos.filter(
-        (todo) => todo.id !== action.payload
-      );
-      return { ...state, todos: filteredTodos };
-
-    case "todos/removeAllTodos":
-      // return initialState;
-      return initialState;
-
-    case "todos/todoId":
-      return { ...state, editTodo: action.payload };
-
-    case "todos/modifyTodo":
-      return {
-        ...state,
-        todos: state.todos.map((todo) =>
-          todo.id === action.payload
-            ? {
-                ...todo,
-                completed: !todo.completed,
-                updatedAt: new Date().toISOString(),
-              }
-            : todo
-        ),
-      };
-
-    case "todos/editTodo":
-      return {
-        ...state,
-        todos: state.todos.map((todo) =>
-          todo.id === state.editTodo
-            ? {
-                ...todo,
-                title: action.payload.title,
-                description: action.payload.description,
-                updatedAt: new Date().toLocaleString(),
-                editTodo: null,
-              }
-            : todo
-        ),
-        editTodo: null,
-        updatedAt: new Date().toLocaleString(),
-      };
-
-    case "todos/filterTodos":
-      return { ...state, filter: action.payload };
-
-    case "todos/completed":
-      return {
-        ...state,
-        todos: state.todos.map((todo) => ({
-          ...todo,
-          completed: true,
-          updatedAt: new Date().toISOString(),
-        })),
-      };
-
-    case "todos/removeEdit":
-      return { ...state, editTodo: null };
-
-    default:
-      return state;
-  }
-}
-
-// Action Creators
-export function createTodo(title, description) {
-  return {
-    type: "todos/createTodo",
-    payload: {
-      id: uuidv4(),
-      title,
-      description,
-      completed: false,
-      createdAt: new Date().toLocaleString(),
-      updatedAt: new Date().toLocaleString(),
+const todoSlice = createSlice({
+  name: "todos",
+  initialState,
+  reducers: {
+    // createTodo(state, action) {
+    //   state.todos.push(action.payload);
+    // },
+    createTodo: {
+      prepare(title, description) {
+        return {
+          payload: {
+            id: uuidv4(),
+            title,
+            description,
+            completed: false,
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+          },
+        };
+      },
+      reducer(state, action) {
+        state.todos.push(action.payload);
+      },
     },
-  };
-}
 
-export function removeTodo(id) {
-  return { type: "todos/removeTodo", payload: id };
-}
+    removeTodo(state, action) {
+      state.todos = state.todos.filter((todo) => todo.id !== action.payload);
+    },
 
-export function removeAllTodos() {
-  return { type: "todos/removeAllTodos" };
-}
+    removeAllTodos(state, action) {
+      state.todos = [];
+    },
 
-export function modifyTodo(id) {
-  return { type: "todos/modifyTodo", payload: id };
-}
+    editTodoId(state, action) {
+      state.editTodo = action.payload;
+    },
 
-export function completedAll() {
-  return { type: "todos/completed" };
-}
+    modifyTodo(state, action) {
+      state.todos = state.todos.map((todo) =>
+        todo.id === action.payload
+          ? {
+              ...todo,
+              completed: !todo.completed,
+              updatedAt: new Date().toISOString(),
+            }
+          : todo
+      );
+    },
 
-export function filterTodos(filter) {
-  return { type: "todos/filterTodos", payload: filter };
-}
+    editTodo(state, action) {
+      state.todos = state.todos.map((todo) =>
+        todo.id === state.editTodo
+          ? {
+              ...todo,
+              title: action.payload.title,
+              description: action.payload.description,
+              updatedAt: new Date().toISOString(),
+            }
+          : todo
+      );
+      state.editTodo = null;
+    },
+    filterTodos(state, action) {
+      state.filter = action.payload;
+    },
+    completedAll(state, action) {
+      state.todos = state.todos.map((todo) => ({
+        ...todo,
+        completed: true,
+        updatedAt: new Date().toISOString(),
+      }));
+    },
+    removeEditMode(state, action) {
+      state.editTodo = null;
+    },
+  },
+});
 
-export function editTodoId(id) {
-  return { type: "todos/todoId", payload: id };
-}
-
-export function editTodo(title, description) {
-  console.log(title, description);
-  return { type: "todos/editTodo", payload: { title, description } };
-}
-
-export function removeEditMode() {
-  return { type: "todos/removeEdit" };
-}
+export default todoSlice.reducer;
+export const {
+  createTodo,
+  removeTodo,
+  removeAllTodos,
+  modifyTodo,
+  completedAll,
+  filterTodos,
+  editTodoId,
+  editTodo,
+  removeEditMode,
+} = todoSlice.actions;
