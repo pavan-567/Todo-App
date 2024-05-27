@@ -3,7 +3,7 @@ import { FaCaretDown, FaCaretUp, FaCheck, FaEdit } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
 import { MdDelete } from "react-icons/md";
 import { useDispatch } from "react-redux";
-import { editTodoId, modifyTodo, removeTodo } from "./todoSlice";
+import { editTodoId } from "./todoSlice";
 import Item from "./styles/Item";
 import { deleteDoc, doc, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase";
@@ -51,8 +51,6 @@ function TodoItem({ todo }) {
             <FaCheck
               className="icon"
               onClick={async () => {
-                // dispatch(modifyTodo(todo.id));
-
                 await updateDoc(doc(db, "todos", todo.id), {
                   completed: true,
                 });
@@ -62,7 +60,6 @@ function TodoItem({ todo }) {
             <IoClose
               className="icon"
               onClick={async () => {
-                // dispatch(modifyTodo(todo.id));
                 await updateDoc(doc(db, "todos", todo.id), {
                   completed: false,
                 });

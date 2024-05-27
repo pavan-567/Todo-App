@@ -1,16 +1,17 @@
 import { useState } from "react";
 import { FaPlus } from "react-icons/fa";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import InputContainer from "./styles/InputContainer";
 import InputDiv from "./styles/InputDiv";
 import Input from "./styles/Input";
 import SubmitButton from "./styles/SubmitButton";
-import { changeState, createTodo } from "./todoSlice";
+import { changeStatus } from "./todoSlice";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { db } from "../../firebase";
 
 function TodoInput() {
   const dispatch = useDispatch();
+  const status = useSelector((store) => store.status);
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -18,7 +19,7 @@ function TodoInput() {
 
   async function createTodoAsync() {
     if (title.length > 0 && description.length > 0) {
-      dispatch(changeState("loading"));
+      dispatch(changeStatus("loading"));
 
       await addDoc(collection(db, "todos"), {
         title,
@@ -27,10 +28,11 @@ function TodoInput() {
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp(),
       });
-      dispatch(changeState("stable"));
 
+      
       setTitle("");
       setDescription("");
+      dispatch(changeStatus("stable"));
     }
   }
 
@@ -44,6 +46,7 @@ function TodoInput() {
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           // onChange={handleInput}
+          disabled={status === "loading"}
           name="title"
         />
       </InputDiv>
@@ -53,6 +56,7 @@ function TodoInput() {
           type="text"
           placeholder="Add Description"
           value={description}
+          disabled={status === "loading"}
           onChange={(e) => setDescription(e.target.value)}
           name="description"
         />
