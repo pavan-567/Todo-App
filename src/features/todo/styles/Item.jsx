@@ -31,7 +31,7 @@ const Item = styled.div`
     font-size: 30px;
     font-weight: bold;
     margin-bottom: 2px;
-    font-family: "Courier New", Courier, monospace;
+    
     word-break: break-word;
   }
 
