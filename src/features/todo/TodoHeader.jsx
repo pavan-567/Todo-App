@@ -14,6 +14,7 @@ function TodoHeader() {
           fontWeight: "bold",
           fontSize: "30px",
           textTransform: "uppercase",
+          letterSpacing: "3px",
         }}
       >
         <span style={{ display: "flex", alignItems: "center", gap: "5px" }}>
@@ -23,9 +24,7 @@ function TodoHeader() {
       </div>
       <CompletedDiv>
         <div>Completed</div>
-        <div>
-          {completedTodos.length}
-        </div>
+        <div>{completedTodos.length}</div>
       </CompletedDiv>
     </Header>
   );

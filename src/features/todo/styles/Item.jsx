@@ -13,6 +13,8 @@ const Item = styled.div`
   border-radius: 10px;
   border: none;
 
+  gap: 10px;
+
   background-color: rgba(0, 25, 33, 0.1);
 
   box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px,
@@ -36,8 +38,9 @@ const Item = styled.div`
   }
 
   & #description {
-    font-style: italic;
+    /* font-style: italic; */
     word-break: break-word;
+    text-align: justify;
   }
 
   & #time {

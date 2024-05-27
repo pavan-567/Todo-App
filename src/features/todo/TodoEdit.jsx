@@ -6,6 +6,7 @@ import { FaEdit } from "react-icons/fa";
 import Item from "./styles/Item";
 import InputDiv from "./styles/InputDiv";
 import Input from "./styles/Input";
+import InputContainer from "./styles/InputContainer";
 
 function TodoEdit() {
   const { title, description } = useSelector((store) =>
@@ -21,23 +22,32 @@ function TodoEdit() {
 
   return (
     <Item>
-      <InputDiv>
-        <label htmlFor="">Title</label>
-        <Input
-          type="text"
-          value={editTitle}
-          onChange={(e) => setEditTitle(e.target.value)}
-        />
-      </InputDiv>
-      <InputDiv>
-        <label htmlFor="">Description</label>
-        <Input
-          type="text"
-          value={editDescription}
-          onChange={(e) => setEditDescription(e.target.value)}
-        />
-      </InputDiv>
-      <div style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
+      <InputContainer>
+        <InputDiv>
+          <label htmlFor="">Title</label>
+          <Input
+            type="text"
+            value={editTitle}
+            onChange={(e) => setEditTitle(e.target.value)}
+          />
+        </InputDiv>
+        <InputDiv>
+          <label htmlFor="">Description</label>
+          <textarea
+            type="text"
+            value={editDescription}
+            onChange={(e) => setEditDescription(e.target.value)}
+          />
+        </InputDiv>
+      </InputContainer>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-evenly",
+          height: "100px",
+        }}
+      >
         <button
           onClick={() => {
             if (editTitle.length > 0 && editDescription.length > 0) {

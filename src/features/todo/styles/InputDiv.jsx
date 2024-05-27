@@ -10,6 +10,17 @@ const InputDiv = styled.div`
     font-size: 12px;
     font-weight: bold;
   }
+
+
+  & textarea {
+    border: none;
+    padding: 4px;
+    margin: 2px 0;
+    border-radius: 3px;
+    outline: none;
+    resize: none;
+    height: 50px;
+  }
 `;
 
 export default InputDiv;

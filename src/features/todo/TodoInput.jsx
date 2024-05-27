@@ -29,7 +29,7 @@ function TodoInput() {
       </InputDiv>
       <InputDiv>
         <label htmlFor="">Enter Description</label>
-        <Input
+        <textarea
           type="text"
           placeholder="Add Description"
           value={description}
@@ -51,7 +51,7 @@ function TodoInput() {
           }
         }}
       >
-        <FaPlus />
+        <FaPlus /> <span>Add</span>
       </SubmitButton>
     </InputContainer>
   );
