@@ -11,7 +11,6 @@ const InputDiv = styled.div`
     font-weight: bold;
   }
 
-
   & textarea {
     border: none;
     padding: 4px;
@@ -20,6 +19,11 @@ const InputDiv = styled.div`
     outline: none;
     resize: none;
     height: 50px;
+  }
+
+  & input,
+  & textarea {
+    caret-color: black;
   }
 `;
 
