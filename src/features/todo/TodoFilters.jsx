@@ -6,12 +6,13 @@ import Button from "./styles/Button";
 function TodoFilters() {
   const dispatch = useDispatch();
   const todosLength = useSelector((store) => store.todos.length);
+  const filter = useSelector((store) => store.filter);
   return (
     <FilterContainer>
       <select
         name=""
         id=""
-        defaultValue="ALL"
+        defaultValue={filter}
         onChange={(e) => {
           dispatch(filterTodos(e.target.value));
         }}

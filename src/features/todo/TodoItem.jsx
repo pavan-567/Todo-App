@@ -11,7 +11,7 @@ function TodoItem({ todo }) {
   const [open, setOpen] = useState(true);
 
   return (
-    <Item status={todo.completed ? "completed" : "pending"}>
+    <Item>
       <div>
         <div
           id="title"

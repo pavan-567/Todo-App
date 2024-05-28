@@ -59,10 +59,10 @@ const Item = styled.div`
   }
 
   & #status div:last-child {
-    color: ${(props) => (props.status === "completed" ? "green" : "red")};
+    /* color: ${(props) => (props.status === "completed" ? "green" : "red")}; */
     font-weight: bold;
-    font-style: ${(props) =>
-      props.status === "completed" ? "bold" : "italic"};
+    /* font-style: ${(props) =>
+      props.status === "completed" ? "bold" : "italic"}; */
   }
 
   & button {
@@ -85,8 +85,5 @@ const Item = styled.div`
     color: white;
   }
 `;
-
-
-
 
 export default Item;
