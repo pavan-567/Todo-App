@@ -2,7 +2,8 @@ const initialState = {
   todos: [],
   filter: "ALL",
   editTodo: null,
-  status: "loading", // Stable, Loading
+  status: "loading", // Stable,
+  operation: "retrieve", // Operations : INSERT, UPDATE, DELETE, RETRIEVE
 };
 
 // Structure => {id: number, title: string, description: string, completed: boolean, createdAt: string, updatedAt: string}
@@ -20,6 +21,9 @@ export default function todoReducer(state = initialState, action) {
 
     case "todos/removeEdit":
       return { ...state, editTodo: null };
+
+    case "todos/operation":
+      return { ...state, operation: action.payload };
 
     case "todos/changeStatus":
       return { ...state, status: action.payload };
@@ -52,4 +56,8 @@ export function removeEditMode() {
 // Important
 export function changeStatus(status) {
   return { type: "todos/changeStatus", payload: status };
+}
+
+export function operation(optMode) {
+  return { type: "todos/operation", payload: optMode };
 }

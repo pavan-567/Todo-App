@@ -1,12 +1,12 @@
 import { collection, onSnapshot, query } from "firebase/firestore";
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { changeStatus, setTodos } from "../todoSlice";
 import { db } from "../../../firebase";
 
 function useFetchTodos() {
   const dispatch = useDispatch();
-
+  const operation = useSelector((store) => store.operation);
   useEffect(() => {
     const q = query(collection(db, "todos"));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {

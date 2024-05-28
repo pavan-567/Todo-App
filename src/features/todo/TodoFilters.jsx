@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { filterTodos } from "./todoSlice";
+import { filterTodos, operation } from "./todoSlice";
 import FilterContainer from "./styles/FilterContainer";
 import Button from "./styles/Button";
 import { deleteDoc, doc, serverTimestamp, updateDoc } from "firebase/firestore";
@@ -44,9 +44,11 @@ function TodoFilters() {
       </Button>
       <Button
         onClick={async () => {
+          dispatch(operation("delete"));
           for (const todo of todos) {
             await deleteDoc(doc(db, "todos", todo.id));
           }
+          console.log("DELETED !!!");
         }}
         disabled={todosLength <= 0}
       >

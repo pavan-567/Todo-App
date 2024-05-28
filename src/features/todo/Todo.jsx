@@ -7,7 +7,7 @@ import Container from "./styles/Container";
 import Div from "./styles/Div";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { collection, onSnapshot, query } from "firebase/firestore";
+// import { collection, onSnapshot, query } from "firebase/firestore";
 import { db } from "../../firebase";
 import { changeStatus, setTodos } from "./todoSlice";
 import useFetchTodos from "./hooks/useFetchTodos";
@@ -17,6 +17,8 @@ import useFetchTodos from "./hooks/useFetchTodos";
 function Todo() {
   const editTodo = useSelector((store) => store.editTodo);
   const status = useSelector((store) => store.status);
+  const store = useSelector((store) => store.operation);
+  console.log(store, status);
 
   useFetchTodos();
 
