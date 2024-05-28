@@ -16,7 +16,6 @@ const initialState = {
       : JSON.parse(localStorage.getItem("todos")).editTodo,
 };
 
-console.log(initialState);
 
 const todoSlice = createSlice({
   name: "todos",

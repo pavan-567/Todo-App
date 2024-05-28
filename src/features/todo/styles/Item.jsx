@@ -30,17 +30,16 @@ const Item = styled.div`
   }
 
   & #title {
-    font-size: 30px;
-    font-weight: bold;
+    font-size: 25px;
+    font-weight: bolder;
     margin-bottom: 2px;
-    font-family: "Courier New", Courier, monospace;
+    /* font-family: "Courier New", Courier, monospace; */
     word-break: break-word;
   }
 
+
   & #description {
-    /* font-style: italic; */
     word-break: break-word;
-    text-align: justify;
   }
 
   & #time {

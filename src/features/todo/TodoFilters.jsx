@@ -25,7 +25,7 @@ function TodoFilters() {
         onClick={() => dispatch(completedAll())}
         disabled={todosLength <= 0}
       >
-        Mark All As Completed
+        Mark All as Completed
       </Button>
       <Button
         onClick={() => dispatch(removeAllTodos())}
