@@ -12,7 +12,7 @@ function RegisterUser() {
   const navigate = useNavigate();
 
   function handleRegister() {
-    dispatch(setName(username));
+    if (username.length > 0) dispatch(setName(username));
     setUsername("");
     navigate("/");
   }
@@ -29,7 +29,11 @@ function RegisterUser() {
           onChange={(e) => setUsername(e.target.value)}
         />
       </InputDiv>
-      <SubmitButton onClick={handleRegister} style={{ alignSelf: "center" }}>
+      <SubmitButton
+        onClick={handleRegister}
+        style={{ alignSelf: "center" }}
+        disabled={username.length === 0}
+      >
         Register
       </SubmitButton>
     </>

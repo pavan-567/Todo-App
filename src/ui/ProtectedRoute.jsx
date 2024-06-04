@@ -1,8 +1,10 @@
 import { useSelector } from "react-redux";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 function ProtectedRoute({ children }) {
+  const navigate = useNavigate();
   const user = useSelector((store) => store.username);
-  return user !== null ? children : <Navigate to="/register" />;
+  if (user) navigate("/");
+  return children;
 }
 
 export default ProtectedRoute;
