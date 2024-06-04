@@ -9,13 +9,7 @@ import { useNavigate } from "react-router-dom";
 function RegisterUser() {
   const [username, setUsername] = useState("");
   const dispatch = useDispatch();
-  const user = useSelector((store) => store.username);
-
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (user) navigate("/");
-  }, []);
 
   function handleRegister() {
     dispatch(setName(username));
