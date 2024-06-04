@@ -31,7 +31,7 @@ function TodoEdit() {
             marginTop: "5px",
           }}
         >
-          Edit Item
+          Edit Todo
         </div>
         <div
           style={{

@@ -7,6 +7,8 @@ function TodoFilters() {
   const dispatch = useDispatch();
   const todosLength = useSelector((store) => store.todos.length);
   const filter = useSelector((store) => store.filter);
+  const editMode = useSelector((store) => store.editTodo);
+
   return (
     <FilterContainer>
       <select
@@ -23,13 +25,13 @@ function TodoFilters() {
       </select>
       <Button
         onClick={() => dispatch(completedAll())}
-        disabled={todosLength <= 0}
+        disabled={todosLength <= 0 || editMode}
       >
         Mark All as Completed
       </Button>
       <Button
         onClick={() => dispatch(removeAllTodos())}
-        disabled={todosLength <= 0}
+        disabled={todosLength <= 0 || editMode}
       >
         Remove All Tasks
       </Button>
