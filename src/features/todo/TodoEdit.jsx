@@ -21,49 +21,65 @@ function TodoEdit() {
   const [editDescription, setEditDescription] = useState(() => description);
 
   return (
-    <Item>
-      <InputContainer>
-        <InputDiv>
-          <label htmlFor="">Title</label>
-          <Input
-            type="text"
-            value={editTitle}
-            onChange={(e) => setEditTitle(e.target.value)}
-          />
-        </InputDiv>
-        <InputDiv>
-          <label htmlFor="">Description</label>
-          <textarea
-            type="text"
-            value={editDescription}
-            onChange={(e) => setEditDescription(e.target.value)}
-          />
-        </InputDiv>
-      </InputContainer>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-evenly",
-          height: "100px",
-        }}
-      >
-        <button
-          onClick={() => {
-            if (editTitle.length > 0 && editDescription.length > 0) {
-              dispatch(
-                editTodo({ title: editTitle, description: editDescription })
-              );
-            }
+    <>
+      <Item direction="col">
+        <div
+          style={{
+            fontWeight: "bold",
+            fontSize: "20px",
+            textAlign: "center",
+            marginTop: "5px",
           }}
         >
-          <FaEdit /> Edit
-        </button>
-        <button onClick={() => dispatch(removeEditMode())}>
-          <IoCloseSharp /> Close
-        </button>
-      </div>
-    </Item>
+          Edit Item
+        </div>
+        <div
+          style={{
+            borderBottom: "2px solid black",
+          }}
+        ></div>
+        <InputContainer>
+          <InputDiv>
+            <label htmlFor="">Title</label>
+            <Input
+              type="text"
+              value={editTitle}
+              onChange={(e) => setEditTitle(e.target.value)}
+            />
+          </InputDiv>
+          <InputDiv>
+            <label htmlFor="">Description</label>
+            <textarea
+              type="text"
+              value={editDescription}
+              onChange={(e) => setEditDescription(e.target.value)}
+            />
+          </InputDiv>
+          <div
+            style={{
+              display: "flex",
+              gap: "10px",
+              marginBottom: "10px",
+            }}
+          >
+            <button
+              onClick={() => {
+                if (editTitle.length > 0 && editDescription.length > 0) {
+                  dispatch(
+                    editTodo({ title: editTitle, description: editDescription })
+                  );
+                }
+              }}
+            >
+              <FaEdit /> Edit
+            </button>
+            <button onClick={() => dispatch(removeEditMode())}>
+              <IoCloseSharp /> Close
+            </button>
+          </div>
+        </InputContainer>
+      </Item>
+    </>
   );
 }
 

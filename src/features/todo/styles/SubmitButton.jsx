@@ -16,9 +16,8 @@ const SubmitButton = styled.button`
   display: flex;
   align-items: center;
   gap: 7px;
-  
-  letter-spacing: 5px;
 
+  letter-spacing: 5px;
 
   & span {
     font-size: 15px;
@@ -30,6 +29,15 @@ const SubmitButton = styled.button`
 
   &:active {
     box-shadow: 4px 4px 12px #c5c5c5, -4px -4px 12px #ffffff;
+  }
+
+  &:disabled {
+    cursor: default;
+    background: #c5c5c5;
+    border: none;
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+    color: gray;
   }
 `;
 

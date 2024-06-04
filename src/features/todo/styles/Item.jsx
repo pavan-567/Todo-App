@@ -8,10 +8,11 @@ const Item = styled.div`
   margin-left: 2px;
   margin-right: 2px;
   display: flex;
-  align-items: center;
+  align-items: ${(props) => (props.direction === "row" ? "center" : "stretch")};
   justify-content: space-between;
   border-radius: 10px;
   border: none;
+  flex-direction: ${(props) => (props.direction === "col" ? "column" : "row")};
 
   gap: 10px;
 
@@ -75,12 +76,12 @@ const Item = styled.div`
 
     background-color: rgba(0, 0, 0, 0.1);
     cursor: pointer;
+    border: 1px solid transparent;
     transition: all 0.3s;
   }
 
   & button:hover {
-    background-color: rgba(0, 0, 0, 0.5);
-    color: white;
+    border: 1px solid gray;
   }
 `;
 

@@ -50,6 +50,7 @@ function TodoInput() {
             setError(message);
           }
         }}
+        disabled={title.length === 0 || description.length === 0}
       >
         <FaPlus /> <span>Add</span>
       </SubmitButton>

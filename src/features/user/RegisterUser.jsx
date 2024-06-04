@@ -19,9 +19,15 @@ function RegisterUser() {
 
   return (
     <>
-      <div style={{ fontSize: "30px", textAlign: "center" }}>Register</div>
+      <div style={{ fontSize: "25px", textAlign: "center" }}>Register User</div>
+      <div
+        style={{
+          borderBottom: "2px solid black",
+          marginTop: "1px",
+        }}
+      ></div>
       <InputDiv>
-        <label htmlFor="">Enter Your Name</label>
+        <label htmlFor="">Your Name</label>
         <Input
           type="text"
           placeholder="Enter Your Name"
@@ -31,7 +37,11 @@ function RegisterUser() {
       </InputDiv>
       <SubmitButton
         onClick={handleRegister}
-        style={{ alignSelf: "center" }}
+        style={{
+          alignSelf: "center",
+          fontSize: "15px",
+          letterSpacing: "normal",
+        }}
         disabled={username.length === 0}
       >
         Register

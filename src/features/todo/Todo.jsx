@@ -22,7 +22,7 @@ function Todo() {
       <TodoHeader />
       <div
         style={{
-          borderBottom: "1px solid black",
+          borderBottom: "2px solid black",
           marginTop: "10px",
         }}
       ></div>
