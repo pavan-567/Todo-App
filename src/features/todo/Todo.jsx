@@ -12,26 +12,24 @@ import { useEffect } from "react";
 
 function Todo() {
   const editTodo = useSelector((store) => store.editTodo);
-
+  
   useEffect(function () {
     document.title = "Todo | React";
   }, []);
 
   return (
-    <Div>
-      <Container>
-        <TodoHeader />
-        <div
-          style={{
-            borderBottom: "1px solid black",
-            marginTop: "10px",
-          }}
-        ></div>
-        <TodoInput />
-        <TodoFilters />
-        {editTodo ? <TodoEdit /> : <TodoList />}
-      </Container>
-    </Div>
+    <>
+      <TodoHeader />
+      <div
+        style={{
+          borderBottom: "1px solid black",
+          marginTop: "10px",
+        }}
+      ></div>
+      <TodoInput />
+      <TodoFilters />
+      {editTodo ? <TodoEdit /> : <TodoList />}
+    </>
   );
 }
 

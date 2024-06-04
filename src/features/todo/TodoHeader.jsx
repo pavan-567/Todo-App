@@ -1,31 +1,66 @@
 import { FcTodoList } from "react-icons/fc";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Header from "./styles/Header";
 import CompletedDiv from "./styles/CompletedDiv";
+import { removeAllTodos, removeName } from "../todo/todoSlice";
+import { useNavigate } from "react-router-dom";
 
 function TodoHeader() {
   const todos = useSelector((store) => store.todos);
   const completedTodos = todos.filter((todo) => todo.completed === true);
+  const user = useSelector((store) => store.username);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   return (
     <Header>
       <div
         style={{
           fontWeight: "bold",
-          fontSize: "30px",
-          textTransform: "uppercase",
-          letterSpacing: "3px",
+          fontSize: "25px",
         }}
       >
-        <span style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+        <span
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "5px",
+          }}
+        >
           <FcTodoList />
           <span>Todo</span>
         </span>
       </div>
-      <CompletedDiv>
+      <div
+        style={{
+          display: "flex",
+          gap: "3px",
+          flexDirection: "column",
+          fontSize: "15px",
+        }}
+      >
+        <div>
+          Welcome <span style={{ fontWeight: "bold" }}>{user}</span>{" "}
+        </div>
+        <div
+          style={{
+            alignSelf: "flex-end",
+            cursor: "pointer",
+            textDecoration: "underline",
+          }}
+          onClick={() => {
+            dispatch(removeName());
+            dispatch(removeAllTodos());
+            navigate("/register");
+          }}
+        >
+          Logout
+        </div>
+      </div>
+      {/* <CompletedDiv>
         <div>Completed</div>
         <div>{completedTodos.length}</div>
-      </CompletedDiv>
+      </CompletedDiv> */}
     </Header>
   );
 }

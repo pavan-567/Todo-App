@@ -17,7 +17,7 @@ function TodoItem({ todo }) {
   }, [completed]);
 
   return (
-    <Item>
+    <Item completed={completed === true ? "true" : "false"}>
       <div>
         <div id="title">{todo.title}</div>
         {open && <div id="description">{todo.description}</div>}

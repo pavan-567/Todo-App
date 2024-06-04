@@ -15,7 +15,7 @@ const Item = styled.div`
 
   gap: 10px;
 
-  background-color: rgba(0, 25, 33, 0.1);
+  /* background-color: rgba(0, 25, 33, 0.1); */
 
   box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px,
     rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
@@ -36,7 +36,6 @@ const Item = styled.div`
     /* font-family: "Courier New", Courier, monospace; */
     word-break: break-word;
   }
-
 
   & #description {
     word-break: break-word;

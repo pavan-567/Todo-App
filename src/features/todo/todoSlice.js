@@ -14,8 +14,11 @@ const initialState = {
     JSON.parse(localStorage.getItem("todos")) === null
       ? null
       : JSON.parse(localStorage.getItem("todos")).editTodo,
+  username:
+    JSON.parse(localStorage.getItem("todos")) === null
+      ? null
+      : JSON.parse(localStorage.getItem("todos")).username,
 };
-
 
 const todoSlice = createSlice({
   name: "todos",
@@ -98,6 +101,15 @@ const todoSlice = createSlice({
       state.editTodo = null;
       localStorage.setItem("todos", JSON.stringify(state));
     },
+    setName(state, action) {
+      state.username = action.payload;
+      localStorage.setItem("todos", JSON.stringify(state));
+      console.log(state);
+    },
+    removeName(state, action) {
+      state.username = null;
+      localStorage.setItem("todos", JSON.stringify(state));
+    },
   },
 });
 
@@ -112,4 +124,6 @@ export const {
   editTodoId,
   editTodo,
   removeEditMode,
+  setName,
+  removeName,
 } = todoSlice.actions;
