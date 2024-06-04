@@ -7,11 +7,12 @@ import Input from "./styles/Input";
 import SubmitButton from "./styles/SubmitButton";
 import { changeStatus, operation } from "./todoSlice";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
-import { db } from "../../firebase";
+import { db } from "../../firebase/firebase";
 
 function TodoInput() {
   const dispatch = useDispatch();
-  const status = useSelector((store) => store.status);
+  const status = useSelector((store) => store.todos.status);
+  const userId = useSelector((store) => store.auth.currentUser?.uid);
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -28,6 +29,7 @@ function TodoInput() {
         completed: false,
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp(),
+        user: userId,
       });
 
       setTitle("");

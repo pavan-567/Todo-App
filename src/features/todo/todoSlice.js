@@ -1,63 +1,52 @@
+import { createSlice } from "@reduxjs/toolkit";
+
 const initialState = {
   todos: [],
   filter: "ALL",
   editTodo: null,
-  status: "loading", // Stable,
-  operation: "retrieve", // Operations : INSERT, UPDATE, DELETE, RETRIEVE
+  status: "loading",
+  operation: "retrieve",
 };
 
-// Structure => {id: number, title: string, description: string, completed: boolean, createdAt: string, updatedAt: string}
+const todoSlice = createSlice({
+  name: "todos",
+  initialState,
+  reducers: {
+    setTodos(state, action) {
+      state.todos = action.payload;
+    },
+    filterTodos(state, action) {
+      state.filter = action.payload;
+    },
+    editTodoId(state, action) {
+      state.editTodo = action.payload;
+    },
+    removeEditMode(state) {
+      state.editTodo = null;
+    },
+    changeStatus(state, action) {
+      state.status = action.payload;
+    },
+    operation(state, action) {
+      state.operation = action.payload;
+    },
+    reset(state) {
+      state.todos = [];
+      state.filter = "ALL";
+      state.editTodo = null;
+      state.status = "loading";
+      state.operation = "retrieve";
+    },
+  },
+});
 
-export default function todoReducer(state = initialState, action) {
-  switch (action.type) {
-    case "todos/setTodos":
-      return { ...state, todos: action.payload };
-
-    case "todos/todoId":
-      return { ...state, editTodo: action.payload };
-
-    case "todos/filterTodos":
-      return { ...state, filter: action.payload };
-
-    case "todos/removeEdit":
-      return { ...state, editTodo: null };
-
-    case "todos/operation":
-      return { ...state, operation: action.payload };
-
-    case "todos/changeStatus":
-      return { ...state, status: action.payload };
-
-    default:
-      return state;
-  }
-}
-
-// Action Creators
-
-export function setTodos(todos) {
-  return { type: "todos/setTodos", payload: todos };
-}
-
-export function filterTodos(filter) {
-  return { type: "todos/filterTodos", payload: filter };
-}
-
-// Important
-export function editTodoId(id) {
-  return { type: "todos/todoId", payload: id };
-}
-
-// Important
-export function removeEditMode() {
-  return { type: "todos/removeEdit" };
-}
-
-// Important
-export function changeStatus(status) {
-  return { type: "todos/changeStatus", payload: status };
-}
-
-export function operation(optMode) {
-  return { type: "todos/operation", payload: optMode };
-}
+export default todoSlice.reducer;
+export const {
+  setTodos,
+  filterTodos,
+  editTodoId,
+  removeEditMode,
+  changeStatus,
+  operation,
+  reset,
+} = todoSlice.actions;

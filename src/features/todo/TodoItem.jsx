@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import { editTodoId } from "./todoSlice";
 import Item from "./styles/Item";
 import { deleteDoc, doc, updateDoc } from "firebase/firestore";
-import { db } from "../../firebase";
+import { db } from "../../firebase/firebase";
 
 function TodoItem({ todo }) {
   const dispatch = useDispatch();

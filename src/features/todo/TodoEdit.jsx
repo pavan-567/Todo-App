@@ -7,14 +7,14 @@ import Item from "./styles/Item";
 import InputDiv from "./styles/InputDiv";
 import Input from "./styles/Input";
 import { doc, serverTimestamp, updateDoc } from "firebase/firestore";
-import { db } from "../../firebase";
+import { db } from "../../firebase/firebase";
 
 function TodoEdit() {
   const { title, description } = useSelector((store) =>
-    store.todos.find((todo) => todo.id === store.editTodo)
+    store.todos.todos.find((todo) => todo.id === store.editTodo)
   );
 
-  const editTodoId = useSelector((store) => store.editTodo);
+  const editTodoId = useSelector((store) => store.todos.editTodo);
   const dispatch = useDispatch();
 
   const [editTitle, setEditTitle] = useState(function () {

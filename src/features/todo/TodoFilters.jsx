@@ -3,13 +3,13 @@ import { filterTodos, operation } from "./todoSlice";
 import FilterContainer from "./styles/FilterContainer";
 import Button from "./styles/Button";
 import { deleteDoc, doc, serverTimestamp, updateDoc } from "firebase/firestore";
-import { db } from "../../firebase";
 import { useState } from "react";
+import { db } from "../../firebase/firebase";
 
 function TodoFilters() {
   const dispatch = useDispatch();
-  const todos = useSelector((store) => store.todos);
-  const filter = useSelector((store) => store.filter);
+  const todos = useSelector((store) => store.todos.todos);
+  const filter = useSelector((store) => store.todos.filter);
   const [taskStatus, setTaskStatus] = useState(() => filter);
 
   const todosLength = todos?.length;
