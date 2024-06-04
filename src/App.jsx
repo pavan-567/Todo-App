@@ -20,7 +20,7 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route path="register" element={<Register />} />
+          <Route path="/register" element={<Register />} />
         </Route>
       </Routes>
     </BrowserRouter>
