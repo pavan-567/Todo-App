@@ -114,6 +114,7 @@ const todoSlice = createSlice({
       state.filter = "ALL";
       state.editTodo = null;
       state.username = null;
+      localStorage.removeItem("todos");
     },
   },
 });
