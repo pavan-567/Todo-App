@@ -50,7 +50,7 @@ const todoSlice = createSlice({
 
     removeAllTodos(state, action) {
       state.todos = [];
-      localStorage.removeItem("todos");
+      localStorage.setItem("todos", JSON.stringify(state));
     },
 
     editTodoId(state, action) {
@@ -104,11 +104,16 @@ const todoSlice = createSlice({
     setName(state, action) {
       state.username = action.payload;
       localStorage.setItem("todos", JSON.stringify(state));
-      console.log(state);
     },
     removeName(state, action) {
       state.username = null;
       localStorage.setItem("todos", JSON.stringify(state));
+    },
+    removeAll(state) {
+      state.todos = [];
+      state.filter = "ALL";
+      state.editTodo = null;
+      state.username = null;
     },
   },
 });
@@ -126,4 +131,5 @@ export const {
   removeEditMode,
   setName,
   removeName,
+  removeAll,
 } = todoSlice.actions;
