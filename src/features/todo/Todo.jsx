@@ -16,18 +16,18 @@ function Todo() {
   const userId = useSelector((store) => store.auth.currentUser.uid);
   const dispatch = useDispatch();
 
-  const { data: todos, isLoading } = useFetchTodos(userId);
+  const { data: todos, isLoading, isFetched } = useFetchTodos(userId);
 
   useEffect(() => {
-    if (!isLoading) dispatch(setTodos(todos));
-  }, [isLoading, todos, dispatch]);
+    if (isFetched) dispatch(setTodos(todos));
+  }, [isFetched, todos, dispatch]);
 
   return (
     <>
       <TodoHeader />
       <div
         style={{
-          borderBottom: "1px solid black",
+          borderBottom: "2px solid black",
           marginTop: "10px",
         }}
       ></div>

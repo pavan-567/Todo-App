@@ -12,6 +12,7 @@ import { useQueryClient } from "@tanstack/react-query";
 function TodoInput() {
   const dispatch = useDispatch();
   const userId = useSelector((store) => store.auth.currentUser?.uid);
+  const editMode = useSelector((store) => store.todos.editTodo);
   const queryClient = useQueryClient();
 
   const [title, setTitle] = useState("");
@@ -20,7 +21,6 @@ function TodoInput() {
 
   async function createTodoAsync() {
     if (title.length > 0 && description.length > 0) {
-
       await addDoc(collection(db, "todos"), {
         title,
         description,
@@ -46,20 +46,22 @@ function TodoInput() {
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           name="title"
+          disabled={editMode}
         />
       </InputDiv>
       <InputDiv>
         <label htmlFor="">Enter Description</label>
-        <Input
+        <textarea
           type="text"
           placeholder="Add Description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           name="description"
+          disabled={editMode}
         />
       </InputDiv>
-      <SubmitButton onClick={createTodoAsync}>
-        <FaPlus />
+      <SubmitButton onClick={createTodoAsync} disabled={editMode}>
+        <FaPlus /> <span>Add</span>
       </SubmitButton>
     </InputContainer>
   );

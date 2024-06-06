@@ -14,8 +14,6 @@ function Login() {
   const [isLogin, setIsLogin] = useState(false);
   const navigate = useNavigate();
   const userLoggedIn = useSelector((store) => store.auth.userLoggedIn);
-  const status = useSelector((store) => store.auth.status);
-  console.log(userLoggedIn);
 
   useEffect(() => {
     if (userLoggedIn) navigate("/");
@@ -26,6 +24,8 @@ function Login() {
       setIsLogin(true);
       await SignIn(email, password);
     }
+    setEmail("");
+    setPassword("");
     navigate("/");
   }
 
@@ -33,8 +33,9 @@ function Login() {
     <>
       {!userLoggedIn ? (
         <>
-          <div style={{ fontSize: "3rem" }}>Login</div>
-          <hr />
+          <div style={{ fontSize: "3rem", textAlign: "center" }}>Login</div>
+          <div style={{ borderBottom: "2px solid black" }}></div>
+
           <InputContainer>
             <InputDiv>
               <label>Enter Email</label>
@@ -54,9 +55,14 @@ function Login() {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </InputDiv>
-            <Button onClick={login}>Submit</Button>
+            <Button
+              onClick={login}
+              disabled={email.length <= 0 || password.length <= 0}
+            >
+              Submit
+            </Button>
           </InputContainer>
-          <div>
+          <div style={{ textAlign: "center", marginTop: "5px" }}>
             New User? <Link to="/signup">Sign Up</Link> Here
           </div>
         </>

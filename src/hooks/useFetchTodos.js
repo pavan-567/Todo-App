@@ -5,12 +5,11 @@ import { db } from "../firebase/firebase";
 import { fetchTodos } from "../utils/todos";
 
 function useFetchTodos(userId) {
-  const { data, isLoading, isError, error } = useQuery({
+  const { data, isLoading, isError, error, isFetched } = useQuery({
     queryKey: ["todos"],
     queryFn: () => fetchTodos(userId),
   });
-
-  return { data, isLoading };
+  return { data, isLoading, isFetched };
 }
 
 export default useFetchTodos;

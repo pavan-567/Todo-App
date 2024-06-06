@@ -8,12 +8,15 @@ const Item = styled.div`
   margin-left: 2px;
   margin-right: 2px;
   display: flex;
-  align-items: center;
+  align-items: ${(props) => (props.direction === "row" ? "center" : "stretch")};
   justify-content: space-between;
   border-radius: 10px;
   border: none;
+  flex-direction: ${(props) => (props.direction === "col" ? "column" : "row")};
 
-  background-color: rgba(0, 25, 33, 0.1);
+  gap: 10px;
+
+  /* background-color: rgba(0, 25, 33, 0.1); */
 
   box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px,
     rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
@@ -28,15 +31,14 @@ const Item = styled.div`
   }
 
   & #title {
-    font-size: 30px;
-    font-weight: bold;
+    font-size: 25px;
+    font-weight: bolder;
     margin-bottom: 2px;
-    
+    /* font-family: "Courier New", Courier, monospace; */
     word-break: break-word;
   }
 
   & #description {
-    font-style: italic;
     word-break: break-word;
   }
 
@@ -74,13 +76,14 @@ const Item = styled.div`
 
     background-color: rgba(0, 0, 0, 0.1);
     cursor: pointer;
+    border: 1px solid transparent;
     transition: all 0.3s;
   }
 
   & button:hover {
-    background-color: rgba(0, 0, 0, 0.5);
-    color: white;
+    border: 1px solid gray;
   }
 `;
+
 
 export default Item;

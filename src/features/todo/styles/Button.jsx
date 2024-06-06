@@ -16,14 +16,12 @@ const Button = styled.button`
   }
 
   &:disabled {
+    cursor: default;
+    border: none;
     transform: none;
-    background-color: #bbbeb6;
+    background-color: #c5c5c5;
   }
 
-  &:disabled:hover {
-    cursor: auto;
-    color: gray;
-  }
 `;
 
 export default Button;

@@ -1,12 +1,12 @@
 import styled from "styled-components";
 
 const Input = styled.input`
-  border: 1px solid lightgray;
-  padding: 5px;
+  border: none;
+  padding: 4px;
   margin: 2px 0;
   border-radius: 3px;
   outline: none;
-  width: 250px;
 `;
+
 
 export default Input;

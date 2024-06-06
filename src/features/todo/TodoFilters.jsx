@@ -11,6 +11,7 @@ function TodoFilters() {
   const dispatch = useDispatch();
   const todos = useSelector((store) => store.todos.todos);
   const filter = useSelector((store) => store.todos.filter);
+  const editMode = useSelector((store) => store.todos.editTodo);
   const [taskStatus, setTaskStatus] = useState(() => filter);
   const queryClient = useQueryClient();
 
@@ -26,6 +27,7 @@ function TodoFilters() {
           dispatch(filterTodos(e.target.value));
           setTaskStatus(e.target.value);
         }}
+        disabled={todosLength <= 0 || editMode}
       >
         <option value="ALL">All</option>
         <option value="COMPLETED">Completed Tasks</option>
@@ -38,9 +40,10 @@ function TodoFilters() {
               completed: true,
               updatedAt: serverTimestamp(),
             });
+            queryClient.invalidateQueries(["todos"]);
           }
         }}
-        disabled={todosLength <= 0}
+        disabled={todosLength <= 0 || editMode}
       >
         Mark All As Completed
       </Button>
@@ -51,7 +54,7 @@ function TodoFilters() {
           }
           queryClient.invalidateQueries(["todos"]);
         }}
-        disabled={todosLength <= 0}
+        disabled={todosLength <= 0 || editMode}
       >
         Remove All Tasks
       </Button>

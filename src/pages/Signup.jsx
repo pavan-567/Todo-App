@@ -32,14 +32,13 @@ function Signup() {
         lastName,
       });
     }
-    console.log("Registered Successfully!");
     navigate("/");
   }
 
   return (
     <>
-      <div style={{ fontSize: "3rem" }}>Sign Up</div>
-      <hr />
+      <div style={{ fontSize: "3rem", textAlign: "center" }}>Sign Up</div>
+      <div style={{ borderBottom : "2px solid black" }}></div>
       <InputContainer>
         <InputDiv>
           <label htmlFor="">Enter First Name</label>
@@ -76,9 +75,19 @@ function Signup() {
             onChange={(e) => setPassword(e.target.value)}
           />
         </InputDiv>
-        <Button onClick={handleSubmit}>Submit</Button>
+        <Button
+          onClick={handleSubmit}
+          disabled={
+            firstName.length <= 0 ||
+            lastName.length <= 0 ||
+            email.length <= 0 ||
+            password.length <= 0
+          }
+        >
+          Submit
+        </Button>
       </InputContainer>
-      <div>
+      <div style={{ margin: "5px 0" }}>
         Already a User? <Link to="/login">Login</Link> Here
       </div>
     </>
