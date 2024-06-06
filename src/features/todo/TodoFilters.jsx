@@ -1,16 +1,18 @@
 import { useDispatch, useSelector } from "react-redux";
-import { filterTodos, operation } from "./todoSlice";
+import { filterTodos } from "./todoSlice";
 import FilterContainer from "./styles/FilterContainer";
 import Button from "./styles/Button";
 import { deleteDoc, doc, serverTimestamp, updateDoc } from "firebase/firestore";
 import { useState } from "react";
 import { db } from "../../firebase/firebase";
+import { useQueryClient } from "@tanstack/react-query";
 
 function TodoFilters() {
   const dispatch = useDispatch();
   const todos = useSelector((store) => store.todos.todos);
   const filter = useSelector((store) => store.todos.filter);
   const [taskStatus, setTaskStatus] = useState(() => filter);
+  const queryClient = useQueryClient();
 
   const todosLength = todos?.length;
 
@@ -44,11 +46,10 @@ function TodoFilters() {
       </Button>
       <Button
         onClick={async () => {
-          dispatch(operation("delete"));
           for (const todo of todos) {
             await deleteDoc(doc(db, "todos", todo.id));
           }
-          console.log("DELETED !!!");
+          queryClient.invalidateQueries(["todos"]);
         }}
         disabled={todosLength <= 0}
       >

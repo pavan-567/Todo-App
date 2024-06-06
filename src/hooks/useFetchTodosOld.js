@@ -1,8 +1,8 @@
 import { collection, getDocs, onSnapshot, query } from "firebase/firestore";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { changeStatus, setTodos } from "../todoSlice";
-import { db } from "../../../firebase/firebase";
+import { changeStatus, setTodos } from "../features/todo/todoSlice";
+import { db } from "../firebase/firebase";
 
 function useFetchTodos() {
   const dispatch = useDispatch();
@@ -32,6 +32,7 @@ function useFetchTodos() {
   // });
 
   useEffect(() => {
+
     const unSub = onSnapshot(
       collection(db, "todos"),
       (snapshot) => {

@@ -14,6 +14,8 @@ function Login() {
   const [isLogin, setIsLogin] = useState(false);
   const navigate = useNavigate();
   const userLoggedIn = useSelector((store) => store.auth.userLoggedIn);
+  const status = useSelector((store) => store.auth.status);
+  console.log(userLoggedIn);
 
   useEffect(() => {
     if (userLoggedIn) navigate("/");
@@ -29,32 +31,38 @@ function Login() {
 
   return (
     <>
-      <div style={{ fontSize: "3rem" }}>Login</div>
-      <hr />
-      <InputContainer>
-        <InputDiv>
-          <label>Enter Email</label>
-          <Input
-            type="email"
-            name="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </InputDiv>
-        <InputDiv>
-          <label>Enter Password</label>
-          <Input
-            type="password"
-            name="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </InputDiv>
-        <Button onClick={login}>Submit</Button>
-      </InputContainer>
-      <div>
-        New User? <Link to="/signup">Sign Up</Link> Here
-      </div>
+      {!userLoggedIn ? (
+        <>
+          <div style={{ fontSize: "3rem" }}>Login</div>
+          <hr />
+          <InputContainer>
+            <InputDiv>
+              <label>Enter Email</label>
+              <Input
+                type="email"
+                name="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </InputDiv>
+            <InputDiv>
+              <label>Enter Password</label>
+              <Input
+                type="password"
+                name="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </InputDiv>
+            <Button onClick={login}>Submit</Button>
+          </InputContainer>
+          <div>
+            New User? <Link to="/signup">Sign Up</Link> Here
+          </div>
+        </>
+      ) : (
+        <p>Loading Login Screen....</p>
+      )}
     </>
   );
 }

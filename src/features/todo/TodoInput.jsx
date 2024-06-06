@@ -5,14 +5,14 @@ import InputContainer from "./styles/InputContainer";
 import InputDiv from "./styles/InputDiv";
 import Input from "./styles/Input";
 import SubmitButton from "./styles/SubmitButton";
-import { changeStatus, operation } from "./todoSlice";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { db } from "../../firebase/firebase";
+import { useQueryClient } from "@tanstack/react-query";
 
 function TodoInput() {
   const dispatch = useDispatch();
-  const status = useSelector((store) => store.todos.status);
   const userId = useSelector((store) => store.auth.currentUser?.uid);
+  const queryClient = useQueryClient();
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -20,8 +20,6 @@ function TodoInput() {
 
   async function createTodoAsync() {
     if (title.length > 0 && description.length > 0) {
-      dispatch(changeStatus("loading"));
-      dispatch(operation("insert"));
 
       await addDoc(collection(db, "todos"), {
         title,
@@ -34,8 +32,7 @@ function TodoInput() {
 
       setTitle("");
       setDescription("");
-      dispatch(changeStatus("stable"));
-      dispatch(changeStatus("retrieve"));
+      queryClient.invalidateQueries(["todos"]);
     }
   }
 
@@ -48,8 +45,6 @@ function TodoInput() {
           placeholder="Add Title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          // onChange={handleInput}
-          disabled={status === "loading"}
           name="title"
         />
       </InputDiv>
@@ -59,7 +54,6 @@ function TodoInput() {
           type="text"
           placeholder="Add Description"
           value={description}
-          disabled={status === "loading"}
           onChange={(e) => setDescription(e.target.value)}
           name="description"
         />

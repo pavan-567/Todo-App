@@ -5,12 +5,14 @@ import { MdDelete } from "react-icons/md";
 import { useDispatch } from "react-redux";
 import { editTodoId } from "./todoSlice";
 import Item from "./styles/Item";
-import { deleteDoc, doc, updateDoc } from "firebase/firestore";
+import { deleteDoc, doc, query, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase/firebase";
+import { useQueryClient } from "@tanstack/react-query";
 
 function TodoItem({ todo }) {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
+  const queryClient = useQueryClient();
 
   return (
     <Item>
@@ -43,6 +45,7 @@ function TodoItem({ todo }) {
             className="icon"
             onClick={async () => {
               await deleteDoc(doc(db, "todos", todo.id));
+              queryClient.invalidateQueries(["todos"]);
             }}
           />
         </div>
@@ -54,6 +57,7 @@ function TodoItem({ todo }) {
                 await updateDoc(doc(db, "todos", todo.id), {
                   completed: true,
                 });
+                queryClient.invalidateQueries(["todos"]);
               }}
             />
           ) : (
@@ -63,6 +67,7 @@ function TodoItem({ todo }) {
                 await updateDoc(doc(db, "todos", todo.id), {
                   completed: false,
                 });
+                queryClient.invalidateQueries(["todos"]);
               }}
             />
           )}

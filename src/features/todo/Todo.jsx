@@ -4,16 +4,23 @@ import TodoFilters from "./TodoFilters";
 import TodoList from "./TodoList";
 import TodoEdit from "./TodoEdit";
 
-import { useSelector } from "react-redux";
-import useFetchTodos from "./hooks/useFetchTodos";
+import { useDispatch, useSelector } from "react-redux";
+import useFetchTodos from "../../hooks/useFetchTodos";
+import { setTodos } from "./todoSlice";
+import { useEffect } from "react";
 
 // Functionality
 
 function Todo() {
   const editTodo = useSelector((store) => store.todos.editTodo);
-  const status = useSelector((store) => store.todos.status);
+  const userId = useSelector((store) => store.auth.currentUser.uid);
+  const dispatch = useDispatch();
 
-  useFetchTodos();
+  const { data: todos, isLoading } = useFetchTodos(userId);
+
+  useEffect(() => {
+    if (!isLoading) dispatch(setTodos(todos));
+  }, [isLoading, todos, dispatch]);
 
   return (
     <>
@@ -25,8 +32,8 @@ function Todo() {
         }}
       ></div>
       <TodoInput />
-      {status === "loading" && <p>Loading....</p>}
-      {status === "stable" && (
+      {isLoading && <p>Loading....</p>}
+      {!isLoading && (
         <>
           <TodoFilters />
           {editTodo ? <TodoEdit /> : <TodoList />}

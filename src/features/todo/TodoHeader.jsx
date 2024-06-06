@@ -9,7 +9,8 @@ import Button from "./styles/Button";
 function TodoHeader() {
   const todos = useSelector((store) => store.todos.todos);
   const completedTodos = todos.filter((todo) => todo.completed === true);
-  const { status, userDetails } = useSelector((store) => store.auth);
+  const userDetails = useSelector((store) => store.auth.userDetails);
+
   const dispatch = useDispatch();
 
   async function logout() {
@@ -17,7 +18,6 @@ function TodoHeader() {
     dispatch(reset());
   }
 
-  if (status === "loading") return <div>Loading....</div>;
   const { firstName, lastName } = userDetails;
   const fullName = firstName + " " + lastName;
   return (

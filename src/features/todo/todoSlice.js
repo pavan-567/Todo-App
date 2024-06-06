@@ -4,8 +4,6 @@ const initialState = {
   todos: [],
   filter: "ALL",
   editTodo: null,
-  status: "loading",
-  operation: "retrieve",
 };
 
 const todoSlice = createSlice({
@@ -24,9 +22,6 @@ const todoSlice = createSlice({
     removeEditMode(state) {
       state.editTodo = null;
     },
-    changeStatus(state, action) {
-      state.status = action.payload;
-    },
     operation(state, action) {
       state.operation = action.payload;
     },
@@ -34,19 +29,10 @@ const todoSlice = createSlice({
       state.todos = [];
       state.filter = "ALL";
       state.editTodo = null;
-      state.status = "loading";
-      state.operation = "retrieve";
     },
   },
 });
 
 export default todoSlice.reducer;
-export const {
-  setTodos,
-  filterTodos,
-  editTodoId,
-  removeEditMode,
-  changeStatus,
-  operation,
-  reset,
-} = todoSlice.actions;
+export const { setTodos, filterTodos, editTodoId, removeEditMode, reset } =
+  todoSlice.actions;
