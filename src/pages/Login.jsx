@@ -3,7 +3,6 @@ import InputContainer from "../features/todo/styles/InputContainer";
 import InputDiv from "../features/todo/styles/InputDiv";
 import Input from "../features/todo/styles/Input";
 import Button from "../features/todo/styles/Button";
-import { onAuthStateChanged } from "firebase/auth";
 import { SignIn } from "../firebase/auth";
 import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";

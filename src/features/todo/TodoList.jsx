@@ -20,7 +20,17 @@ function TodoList() {
         {todos?.length > 0 ? (
           todos.map((todo) => <TodoItem todo={todo} key={todo.id} />)
         ) : (
-          <p>No Todo Items Available!</p>
+          <div
+            style={{
+              textAlign: "center",
+              fontWeight: "bold",
+              fontSize: "20px",
+              margin: "10px 0",
+              textTransform: "uppercase",
+            }}
+          >
+            No Todo Items Available
+          </div>
         )}
       </List>
     </>

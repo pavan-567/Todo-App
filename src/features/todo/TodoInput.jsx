@@ -60,7 +60,10 @@ function TodoInput() {
           disabled={editMode}
         />
       </InputDiv>
-      <SubmitButton onClick={createTodoAsync} disabled={editMode}>
+      <SubmitButton
+        onClick={createTodoAsync}
+        disabled={title.length <= 0 || description.length <= 0 || editMode}
+      >
         <FaPlus /> <span>Add</span>
       </SubmitButton>
     </InputContainer>

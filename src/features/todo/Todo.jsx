@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import useFetchTodos from "../../hooks/useFetchTodos";
 import { setTodos } from "./todoSlice";
 import { useEffect } from "react";
+import Spinner from "./styles/Spinner";
 
 // Functionality
 
@@ -32,7 +33,17 @@ function Todo() {
         }}
       ></div>
       <TodoInput />
-      {isLoading && <p>Loading....</p>}
+      {isLoading && (
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Spinner />
+        </div>
+      )}
       {!isLoading && (
         <>
           <TodoFilters />
