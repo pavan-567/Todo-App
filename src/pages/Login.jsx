@@ -6,6 +6,7 @@ import Button from "../features/todo/styles/Button";
 import { SignIn } from "../firebase/auth";
 import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -21,7 +22,12 @@ function Login() {
   async function login() {
     if (!isLogin) {
       setIsLogin(true);
-      await SignIn(email, password);
+      try {
+        await SignIn(email, password);
+        toast.success("Successfully Logged In!");
+      } catch (err) {
+        toast.error("Invalid Credentials");
+      }
     }
     setEmail("");
     setPassword("");
@@ -56,7 +62,7 @@ function Login() {
             </InputDiv>
             <Button
               onClick={login}
-              disabled={email.length <= 0 || password.length <= 0}
+              disabled={email.length <= 3 || password.length <= 3}
             >
               Submit
             </Button>

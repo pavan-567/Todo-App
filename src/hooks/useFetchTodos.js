@@ -9,7 +9,7 @@ function useFetchTodos(userId) {
     queryKey: ["todos"],
     queryFn: () => fetchTodos(userId),
   });
-  return { data, isLoading, isFetched };
+  return { data, isLoading, isFetched, isError, error };
 }
 
 export default useFetchTodos;

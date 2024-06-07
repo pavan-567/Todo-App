@@ -5,6 +5,7 @@ import CompletedDiv from "./styles/CompletedDiv";
 import { SignOut } from "../../firebase/auth";
 import { reset } from "./todoSlice";
 import Button from "./styles/Button";
+import toast from "react-hot-toast";
 
 function TodoHeader() {
   const todos = useSelector((store) => store.todos.todos);
@@ -14,8 +15,13 @@ function TodoHeader() {
   const dispatch = useDispatch();
 
   async function logout() {
-    await SignOut();
-    dispatch(reset());
+    try {
+      await SignOut();
+      dispatch(reset());
+      toast.success("Logged Out Successfully!");
+    } catch (err) {
+      toast.error(err.message);
+    }
   }
 
   const { firstName, lastName } = userDetails;

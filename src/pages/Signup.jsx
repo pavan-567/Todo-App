@@ -8,6 +8,7 @@ import Button from "../features/todo/styles/Button";
 import { CreateUser } from "../firebase/auth";
 import { auth, db } from "../firebase/firebase";
 import { collection, doc, setDoc } from "firebase/firestore";
+import toast from "react-hot-toast";
 
 function Signup() {
   const navigate = useNavigate();
@@ -23,22 +24,33 @@ function Signup() {
   });
 
   async function handleSubmit() {
-    await CreateUser(email, password);
-    const user = auth.currentUser;
-    if (user) {
-      await setDoc(doc(db, "Users", user.uid), {
-        email: user.email,
-        firstName,
-        lastName,
-      });
+    try {
+      await CreateUser(email, password);
+      const user = auth.currentUser;
+      if (user) {
+        await setDoc(doc(db, "Users", user.uid), {
+          email: user.email,
+          firstName,
+          lastName,
+        });
+      }
+
+      toast.success("User Registered Successfully!");
+      navigate("/");
+    } catch (err) {
+      toast.error(err.message.replace("Firebase: ", ""));
+    } finally {
+      setFirstName("");
+      setLastName("");
+      setEmail("");
+      setPassword("");
     }
-    navigate("/");
   }
 
   return (
     <>
       <div style={{ fontSize: "3rem", textAlign: "center" }}>Sign Up</div>
-      <div style={{ borderBottom : "2px solid black" }}></div>
+      <div style={{ borderBottom: "2px solid black" }}></div>
       <InputContainer>
         <InputDiv>
           <label htmlFor="">Enter First Name</label>
@@ -78,10 +90,10 @@ function Signup() {
         <Button
           onClick={handleSubmit}
           disabled={
-            firstName.length <= 0 ||
-            lastName.length <= 0 ||
-            email.length <= 0 ||
-            password.length <= 0
+            firstName.length <= 3 ||
+            lastName.length <= 3 ||
+            email.length <= 3 ||
+            password.length <= 3
           }
         >
           Submit

@@ -10,6 +10,7 @@ import Input from "./styles/Input";
 import { doc, query, serverTimestamp, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase/firebase";
 import { useQueryClient } from "@tanstack/react-query";
+import { toast } from "react-hot-toast";
 
 function TodoEdit() {
   const { title, description } = useSelector((store) =>
@@ -73,16 +74,21 @@ function TodoEdit() {
             <button
               onClick={async () => {
                 if (editTitle.length > 0 && editDescription.length > 0) {
-                  await updateDoc(doc(db, "todos", editTodoId), {
-                    title: editTitle,
-                    description: editDescription,
-                    updatedAt: serverTimestamp(),
-                  });
+                  try {
+                    await updateDoc(doc(db, "todos", editTodoId), {
+                      title: editTitle,
+                      description: editDescription,
+                      updatedAt: serverTimestamp(),
+                    });
 
-                  setEditTitle("");
-                  setEditDescription("");
-                  dispatch(removeEditMode());
-                  queryClient.invalidateQueries(["todos"]);
+                    setEditTitle("");
+                    setEditDescription("");
+                    dispatch(removeEditMode());
+                    queryClient.invalidateQueries(["todos"]);
+                    toast.success("Edited Todo Item Successfully!")
+                  } catch (err) {
+                    toast.error(err.message);
+                  }
                 }
               }}
             >
