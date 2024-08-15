@@ -1,23 +1,17 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { v4 as uuidv4 } from "uuid";
+import { TodoFilter } from "./types/Filter";
+import Todo from "./types/Todo";
+import TodoState from "./types/TodoState";
 
-const initialState = {
-  todos:
-    JSON.parse(localStorage.getItem("todos")) === null
-      ? []
-      : JSON.parse(localStorage.getItem("todos")).todos,
-  filter:
-    JSON.parse(localStorage.getItem("todos")) === null
-      ? "ALL"
-      : JSON.parse(localStorage.getItem("todos")).filter,
-  editTodo:
-    JSON.parse(localStorage.getItem("todos")) === null
-      ? null
-      : JSON.parse(localStorage.getItem("todos")).editTodo,
-  username:
-    JSON.parse(localStorage.getItem("todos")) === null
-      ? null
-      : JSON.parse(localStorage.getItem("todos")).username,
+let storedTodos: string | null = localStorage.getItem("todos");
+let savedTodos: TodoState | null = storedTodos ? JSON.parse(storedTodos) : null;
+
+const initialState: TodoState = {
+  todos: savedTodos?.todos || [],
+  filter: savedTodos?.filter || TodoFilter.ALL,
+  editTodo: savedTodos?.editTodo || null,
+  username: savedTodos?.username || null,
 };
 
 const todoSlice = createSlice({
@@ -25,7 +19,7 @@ const todoSlice = createSlice({
   initialState,
   reducers: {
     createTodo: {
-      prepare(title, description) {
+      prepare(title: string, description: string) {
         return {
           payload: {
             id: uuidv4(),
@@ -37,28 +31,28 @@ const todoSlice = createSlice({
           },
         };
       },
-      reducer(state, action) {
+      reducer(state: TodoState, action: PayloadAction<Todo>) {
         state.todos.push(action.payload);
         localStorage.setItem("todos", JSON.stringify(state));
       },
     },
 
-    removeTodo(state, action) {
-      state.todos = state.todos.filter((todo) => todo.id !== action.payload);
+    removeTodo(state: TodoState, action: PayloadAction<string>) {
+      state.todos = state.todos.filter((todo: Todo) => todo.id !== action.payload);
       localStorage.setItem("todos", JSON.stringify(state));
     },
 
-    removeAllTodos(state, action) {
+    removeAllTodos(state: TodoState) {
       state.todos = [];
       localStorage.setItem("todos", JSON.stringify(state));
     },
 
-    editTodoId(state, action) {
+    editTodoId(state: TodoState, action: PayloadAction<string>) {
       state.editTodo = action.payload;
       localStorage.setItem("todos", JSON.stringify(state));
     },
 
-    modifyTodo(state, action) {
+    modifyTodo(state: TodoState, action) {
       state.todos = state.todos.map((todo) =>
         todo.id === action.payload
           ? {
@@ -71,7 +65,7 @@ const todoSlice = createSlice({
       localStorage.setItem("todos", JSON.stringify(state));
     },
 
-    editTodo(state, action) {
+    editTodo(state: TodoState, action: PayloadAction<{title: string, description: string}>) {
       state.todos = state.todos.map((todo) =>
         todo.id === state.editTodo
           ? {
@@ -85,11 +79,11 @@ const todoSlice = createSlice({
       state.editTodo = null;
       localStorage.setItem("todos", JSON.stringify(state));
     },
-    filterTodos(state, action) {
+    filterTodos(state: TodoState, action: PayloadAction<TodoFilter>) {
       state.filter = action.payload;
       localStorage.setItem("todos", JSON.stringify(state));
     },
-    completedAll(state, action) {
+    completedAll(state: TodoState) {
       state.todos = state.todos.map((todo) => ({
         ...todo,
         completed: true,
@@ -97,21 +91,21 @@ const todoSlice = createSlice({
       }));
       localStorage.setItem("todos", JSON.stringify(state));
     },
-    removeEditMode(state, action) {
+    removeEditMode(state: TodoState) {
       state.editTodo = null;
       localStorage.setItem("todos", JSON.stringify(state));
     },
-    setName(state, action) {
+    setName(state: TodoState, action: PayloadAction<string>) {
       state.username = action.payload;
       localStorage.setItem("todos", JSON.stringify(state));
     },
-    removeName(state, action) {
+    removeName(state: TodoState) {
       state.username = null;
       localStorage.setItem("todos", JSON.stringify(state));
     },
-    removeAll(state) {
+    removeAll(state: TodoState) {
       state.todos = [];
-      state.filter = "ALL";
+      state.filter = TodoFilter.ALL;
       state.editTodo = null;
       state.username = null;
       localStorage.removeItem("todos");

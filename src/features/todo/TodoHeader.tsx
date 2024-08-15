@@ -2,13 +2,14 @@ import { FcTodoList } from "react-icons/fc";
 import { useDispatch, useSelector } from "react-redux";
 import Header from "./styles/Header";
 import CompletedDiv from "./styles/CompletedDiv";
-import { removeAll, removeAllTodos, removeName } from "../todo/todoSlice";
+import { removeAll, removeAllTodos, removeName } from "./todoSlice";
 import { useNavigate } from "react-router-dom";
+import { IRootStore } from "../../store";
 
 function TodoHeader() {
-  const todos = useSelector((store) => store.todos);
+  const todos = useSelector((store: IRootStore) => store.todos);
   // const completedTodos = todos.filter((todo) => todo.completed === true);
-  const user = useSelector((store) => store.username);
+  const user = useSelector((store: IRootStore) => store.username);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -56,10 +57,6 @@ function TodoHeader() {
           Logout
         </div>
       </div>
-      {/* <CompletedDiv>
-        <div>Completed</div>
-        <div>{completedTodos.length}</div>
-      </CompletedDiv> */}
     </Header>
   );
 }

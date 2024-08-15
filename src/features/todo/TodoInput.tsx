@@ -10,9 +10,9 @@ import { createTodo } from "./todoSlice";
 function TodoInput() {
   const dispatch = useDispatch();
 
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [error, setError] = useState("");
+  const [title, setTitle] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
+  const [error, setError] = useState<string>("");
 
   return (
     <InputContainer>
@@ -23,14 +23,12 @@ function TodoInput() {
           placeholder="Add Title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          // onChange={handleInput}
           name="title"
         />
       </InputDiv>
       <InputDiv>
         <label htmlFor="">Enter Description</label>
         <textarea
-          type="text"
           placeholder="Add Description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}

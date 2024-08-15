@@ -17,7 +17,7 @@ function TodoItem({ todo }) {
   }, [completed]);
 
   return (
-    <Item completed={completed === true ? "true" : "false"}>
+    <Item>
       <div>
         <div id="title">{todo.title}</div>
         {open && <div id="description">{todo.description}</div>}
@@ -72,7 +72,7 @@ function TodoItem({ todo }) {
             )}
           </div>
         </div>
-        <StatusDiv complete={completed ? "true" : "false"}>
+        <StatusDiv $complete={completed}>
           {completed ? "completed" : "pending"}
         </StatusDiv>
       </div>

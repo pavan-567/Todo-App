@@ -1,6 +1,10 @@
 import styled from "styled-components";
 
-const Button = styled.button`
+interface ButtonProps {
+  disabled?: boolean
+}
+
+const Button = styled.button<ButtonProps>`
   border-radius: 5px;
   outline: none;
   border: 1px solid #e8e8e8;

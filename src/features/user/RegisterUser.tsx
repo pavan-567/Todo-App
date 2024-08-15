@@ -7,7 +7,7 @@ import { setName } from "../todo/todoSlice";
 import { useNavigate } from "react-router-dom";
 
 function RegisterUser() {
-  const [username, setUsername] = useState("");
+  const [username, setUsername] = useState<string>("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
 

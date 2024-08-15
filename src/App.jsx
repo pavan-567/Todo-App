@@ -1,5 +1,4 @@
 import "./App.css";
-import Todo from "./features/todo/Todo";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import AppLayout from "./ui/AppLayout";
 import Register from "./pages/Register";

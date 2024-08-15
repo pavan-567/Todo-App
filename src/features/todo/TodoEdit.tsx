@@ -1,17 +1,20 @@
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { editTodo, removeEditMode } from "./todoSlice";
-import { IoCloseSharp } from "react-icons/io5";
 import { FaEdit } from "react-icons/fa";
-import Item from "./styles/Item";
-import InputDiv from "./styles/InputDiv";
+import { IoCloseSharp } from "react-icons/io5";
+import { useDispatch, useSelector } from "react-redux";
+import { IRootStore } from "../../store";
 import Input from "./styles/Input";
 import InputContainer from "./styles/InputContainer";
+import InputDiv from "./styles/InputDiv";
+import Item from "./styles/Item";
+import { editTodo, removeEditMode } from "./todoSlice";
+import Todo from "./types/Todo";
 
 function TodoEdit() {
-  const { title, description } = useSelector((store) =>
-    store.todos.find((todo) => todo.id === store.editTodo)
-  );
+  const {title, description}: Todo = useSelector((store: IRootStore) =>
+    store.todos?.find((todo: Todo) => todo.id === store.editTodo)
+  ) as Todo; // Always Returns TODO
+
   const dispatch = useDispatch();
 
   const [editTitle, setEditTitle] = useState(function () {
@@ -50,7 +53,6 @@ function TodoEdit() {
           <InputDiv>
             <label htmlFor="">Description</label>
             <textarea
-              type="text"
               value={editDescription}
               onChange={(e) => setEditDescription(e.target.value)}
             />

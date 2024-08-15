@@ -1,6 +1,10 @@
 import styled from "styled-components";
 
-const Item = styled.div`
+interface ItemProps {
+  direction? : string 
+}
+
+const Item = styled.div<ItemProps>`
   border: 1px solid black;
   padding: 5px 10px;
   margin-top: 10px;
@@ -8,11 +12,11 @@ const Item = styled.div`
   margin-left: 2px;
   margin-right: 2px;
   display: flex;
-  align-items: ${(props) => (props.direction === "row" ? "center" : "stretch")};
+  align-items: ${({direction}) => (direction === "row" ? "center" : "stretch")};
   justify-content: space-between;
   border-radius: 10px;
   border: none;
-  flex-direction: ${(props) => (props.direction === "col" ? "column" : "row")};
+  flex-direction: ${({direction}) => (direction === "col" ? "column" : "row")};
 
   gap: 10px;
 

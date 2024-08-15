@@ -2,13 +2,14 @@ import TodoHeader from "./TodoHeader";
 import TodoInput from "./TodoInput";
 import TodoFilters from "./TodoFilters";
 import TodoList from "./TodoList";
-import TodoEdit from "./TodoEdit";
 import { useSelector } from "react-redux";
+import { IRootStore } from "store";
+import TodoEdit from "./TodoEdit";
 
 // Functionality
 
 function Todo() {
-  const editTodo = useSelector((store) => store.editTodo);
+  const editTodo = useSelector((store: IRootStore) => store.editTodo);
 
 
   return (
